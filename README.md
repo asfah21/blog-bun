@@ -1,76 +1,99 @@
-# AZRA - Asset Management System v0.4.6
+# ⚡ Bun Blog (Azra System) - v0.3.1 Beta
 
-A modern asset management system for managing units/equipment, work orders and breakdowns, maintenance history (RFU), reporting, and role-based user management.
+![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)
+![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
+![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-## Key Features
-- Asset and equipment management
-- Work order and breakdown tracking + RFU report
-- Maintenance history and unit activity
-- User management + RBAC (role-based)
-- Dashboard, reporting, and lightweight analytics
+A modern, high-performance system for **Blogging** and **Asset Management** built with **Bun**, **Next.js 16 (App Router)**, and **React 19**. Featuring a comprehensive dashboard for managing posts, assets, maintenance reports, and users.
 
-## Tech Stack
-- Frontend: Next.js 15 (App Router), React 18, TypeScript, HeroUI, Tailwind CSS
-- Backend/DB: Next.js API Routes, Prisma 6, PostgreSQL, NextAuth (Credentials), bcrypt
-- Infra/Utils: Sharp, AWS S3 (optional), Upstash Redis (rate limiting), Pino, Zod, TanStack Query, date-fns
+## ✨ Key Features
 
-## Project Structure
+-   **📝 Blog Management**: Rich management for blog posts, categories, and tags.
+-   **🏢 Asset & Maintenance**: Track assets, work orders, and maintenance history.
+-   **🔐 Advanced Auth**: Secure Role-Based Access Control (RBAC) powered by NextAuth.
+-   **📊 Analytics Dashboard**: Real-time reporting and lightweight analytics.
+-   **⚡ High Performance**: Powered by **Bun** runtime and **Turbopack**.
+-   **💅 Premium UI**: Modern interface using **HeroUI** and **Tailwind CSS**.
+
+## 🛠️ Tech Stack
+
+-   **Runtime**: [Bun](https://bun.sh)
+-   **Framework**: [Next.js 16](https://nextjs.org)
+-   **Database**: PostgreSQL with [Prisma ORM](https://www.prisma.io/)
+-   **Auth**: [NextAuth.js](https://next-auth.js.org/) (Credentials + JWT)
+-   **Styling**: Tailwind CSS, HeroUI, Framer Motion
+-   **Utils**: Zod (Validation), Upstash (Rate Limiting), Pino (Logging), React-PDF
+
+## 🚀 Getting Started
+
+### Prerequisites
+-   [Bun](https://bun.sh) (v1.1+)
+-   PostgreSQL Database
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone https://github.com/yourusername/blog-bun.git
+    cd blog-bun
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    bun install
+    ```
+
+3.  **Environment Setup**
+    Create a `.env` file in the root based on `.env.example` (or use the minimal config below):
+    ```env
+    # Database
+    DATABASE_URL="postgresql://user:pass@host:5432/db_name"
+
+    # NextAuth
+    NEXTAUTH_SECRET="your-secure-secret-key"
+    NEXTAUTH_URL="http://localhost:3000"
+    ```
+
+4.  **Database Migration**
+    ```bash
+    bunx prisma generate
+    bunx prisma db push
+    # Optional: Seed data
+    bunx prisma db seed
+    ```
+
+### 🏃‍♂️ Running the App
+
+Start the development server with Turbopack:
+
+```bash
+bun run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) to view the application.
+
+## 📜 Scripts
+
+| Command | Description |
+| :--- | :--- |
+| `bun run dev` | Start dev server with Turbopack |
+| `bun run build` | Build for production |
+| `bun run start` | Start production server |
+| `bun run lint` | Run ESLint |
+
+## 📂 Project Structure
+
+```
 azra/
-├─ app/ (routes, api, pages)
-├─ components/ (UI & forms)
-├─ lib/ (auth, prisma, logger, limiter, utils)
-├─ prisma/ (schema, migrations, seed)
-├─ public/
-└─ types/
-
-## Quick Start
-```bash
-# Install dependencies
-npm install
-
-# Prisma & database (dev)
-npx prisma generate
-npx prisma db push
-# (optional) seed
-# npx prisma db seed
-
-# Start dev server
-npm run dev
+├── app/                 # Next.js App Router (Pages, API)
+├── components/          # Reusable UI Components
+├── lib/                 # Utilities, Auth, Prisma Client
+├── prisma/              # Database Schema & Seeds
+├── public/              # Static Assets
+└── types/               # Global Type Definitions
 ```
 
-## Environment (minimal)
-Create a `.env` file with the following core variables:
-```env
-# Database
-DATABASE_URL="postgresql://user:pass@host:5432/db"
-
-# NextAuth
-NEXTAUTH_SECRET="your-secret-key"
-NEXTAUTH_URL="http://localhost:3000"
-```
-
-## Main APIs
-- Auth: `POST /api/auth/[...nextauth]`
-- Dashboard: `GET /api/dashboard`, `/assets`, `/users`, `/workorders`, `/report`, `/recent-activities`
-- Maintenance History: `GET|POST /api/maintenance-history`
-- General data: `GET /api/data`
-
-CRUD for assets/users/WO is available via dashboard pages, server actions, or related APIs.
-
-## Security
-- NextAuth (JWT sessions), bcrypt hashing
-- RBAC (Prisma role enum), route protection via `middleware.ts`
-- Input validation (Zod/Prisma), rate limiting (Upstash)
-
-## Build & Deploy
-```bash
-# Build production
-npm run build
-
-# Start production
-npm start
-```
-Target: Vercel or VPS/Docker. Store secrets in `.env` or the platform dashboard.
-
-## License
-MIT License
+## 📄 License
+[MIT License](LICENSE)
