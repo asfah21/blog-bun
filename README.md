@@ -1,4 +1,4 @@
-# ⚡ Bun Blog (Azra System) - v0.3.1 Beta
+# ⚡ Bun Blog (AZRA) - v0.3.1 Beta
 
 ![Bun](https://img.shields.io/badge/Bun-%23000000.svg?style=for-the-badge&logo=bun&logoColor=white)
 ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
