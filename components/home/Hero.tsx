@@ -52,7 +52,7 @@ export default function Hero() {
         <Card
           radius="lg"
           shadow="sm"
-          className="w-full p-6 bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border border-white/20"
+          className="w-full p-6 bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border-none"
         >
           <section className="flex relative overflow-hidden lg:overflow-visible w-full flex-nowrap justify-between items-center max-w-screen-2xl mx-auto">
             <motion.div
@@ -134,11 +134,11 @@ export default function Hero() {
                     alt="Azra Management Assets"
                     className="object-cover"
                     height={300}
-                    src="/hero-v2.svg"
+                    src="/img-font.jpg"
                     width={450}
                   />
                   <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                    <p className="text-tiny text-white/80">Currently in Beta</p>
+                    <p className="text-tiny text-white/80">Exclusive free and premium font</p>
                     <Button
                       className="text-tiny text-white bg-black/20"
                       color="default"
@@ -146,7 +146,7 @@ export default function Hero() {
                       size="sm"
                       variant="flat"
                     >
-                      Notify me
+                      Download Now
                     </Button>
                   </CardFooter>
                 </Card>

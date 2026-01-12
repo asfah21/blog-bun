@@ -36,7 +36,7 @@ export default function Fonts() {
         // Function to update colors based on theme
         const updateColors = (isDark: boolean) => {
             if (isDark) {
-                setBackgroundColor("#303846"); // rgb(48, 56, 70) converted to hex
+                setBackgroundColor("#0c0c0cff"); // rgb(48, 56, 70) converted to hex
                 setTextColor("#ffffff");
             } else {
                 setBackgroundColor("#ffffff");
@@ -192,7 +192,7 @@ export default function Fonts() {
                         <div className="grid grid-cols-1 gap-6">
                             {loading ? (
                                 Array.from({ length: 3 }).map((_, i) => (
-                                    <div key={i} className="h-40 w-full animate-pulse rounded-xl bg-default-200" />
+                                    <div key={i} className="h-40 w-full animate-pulse rounded-xl bg-default-100/50" />
                                 ))
                             ) : (
                                 fonts.map((font, index) => (
@@ -201,7 +201,7 @@ export default function Fonts() {
                                         animate={{ opacity: 1, y: 0 }}
                                         transition={{ delay: index * 0.1 }}
                                         key={index}
-                                        className="group relative overflow-hidden rounded-xl bg-content1 border border-default-200 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
+                                        className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
                                     >
                                         <style jsx global>{`
                                             @font-face {

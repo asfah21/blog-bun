@@ -23,10 +23,10 @@ export default function Home() {
         <Fonts />
         <HeroAlpha />
         {/* <HeroGamma /> */}
-        <WithLove />
-        <CardBawah />
-        <HeroDelta />
-        <FooterBefore />
+        {/* <WithLove /> */}
+        {/* <CardBawah /> */}
+        {/* <HeroDelta /> */}
+        {/* <FooterBefore /> */}
       </main>
       <Footer />
     </div>

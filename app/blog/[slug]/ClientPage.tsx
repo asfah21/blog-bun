@@ -3,8 +3,9 @@ import Image from "next/image";
 import { prisma } from "@/lib/prisma";
 import { Calendar, User2, Tag } from "lucide-react";
 import HowToGet from "./components/HowToGet";
-import ImageSlider from "./components/ImageSlider";
+// import ImageSlider from "./components/ImageSlider";
 import BackButton from "./components/BackButton";
+import FontBlog from "./components/FontBlog";
 
 export interface BlogClientArticleProps {
   post: {
@@ -121,7 +122,7 @@ export default async function ClientPage({ params }: Props) {
 
       {/* Title */}
       <h1 className="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-white dark:to-white/70 bg-clip-text text-transparent">
-        {post.title} ID {index}
+        {post.title} <span className="text-xs font-semibold text-gray-200 dark:text-gray-800">[{index}]</span>
       </h1>
 
       {/* Hero image */}
@@ -137,9 +138,9 @@ export default async function ClientPage({ params }: Props) {
           ) : (
             <div className="absolute inset-0 p-6 flex items-center justify-center bg-gradient-to-br from-neutral-100 via-neutral-200 to-neutral-300 dark:from-[#0D0F16] dark:via-[#141724] dark:to-[#1A1D2B]">
               <div className="mx-auto max-w-lg text-center">
-                <p className="text-2xl font-semibold">UI HeroUI</p>
+                <p className="text-2xl font-semibold">{post.title}</p>
                 <p className="text-sm text-foreground/70 mt-2">
-                  A beautiful, modern UI experience.
+                  {post.description}
                 </p>
               </div>
             </div>
@@ -159,7 +160,9 @@ export default async function ClientPage({ params }: Props) {
         {/* Structured sections dynamic */}
         <SectionComponent post={post} />
 
-        <ImageSlider images={post.images ?? []} />
+        <FontBlog />
+
+        {/* <ImageSlider images={post.images ?? []} /> */}
 
         {post.description && (
           <section>

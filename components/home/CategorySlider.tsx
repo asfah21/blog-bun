@@ -58,7 +58,7 @@ export default function CategorySlider() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.1 }}
-            className="px-6 md:px-20 flex flex-col items-center justify-center"
+            className="px-6 md:px-20 flex flex-col items-center justify-center pb-1"
         >
             <div className="w-full max-w-screen-2xl px-6">
                 <ScrollShadow
