@@ -7,6 +7,7 @@ import { Alert, Card, CardHeader, CardFooter } from "@heroui/react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
 import { Logo } from "@/components/icons";
+import ReCAPTCHA from "react-google-recaptcha";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -47,7 +48,8 @@ function LoginForm() {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [lockUntil, setLockUntil] = useState<Date | null>(null);
-  const [rememberMe, setRememberMe] = useState(true);
+
+  const [captchaVal, setCaptchaVal] = useState<string | null>(null);
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -106,6 +108,11 @@ function LoginForm() {
       return;
     }
 
+    if (!captchaVal) {
+      setError("Silakan selesaikan captcha terlebih dahulu.");
+      return;
+    }
+
     setLoading(true);
     setError("");
 
@@ -114,7 +121,6 @@ function LoginForm() {
         redirect: false,
         email,
         password,
-        remember: rememberMe.toString(),
         callbackUrl: searchParams.get("callbackUrl") || "/dashboard",
       });
 
@@ -123,14 +129,8 @@ function LoginForm() {
         setLoginAttempts((prev) => prev + 1);
       } else {
         setLoginAttempts(0);
-        if (rememberMe) {
-          localStorage.setItem(
-            "azra_remember",
-            JSON.stringify({ email, password }),
-          );
-        } else {
-          localStorage.removeItem("azra_remember");
-        }
+        // Clean up any old remembered credential if it exists, as we no longer support this feature
+        localStorage.removeItem("azra_remember");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -273,20 +273,13 @@ function LoginForm() {
               </div>
             </div>
 
-            <div className="flex items-center">
-              <input
-                checked={rememberMe}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                id="remember-me"
-                type="checkbox"
-                onChange={() => setRememberMe(!rememberMe)}
+
+
+            <div className="flex justify-center w-full">
+              <ReCAPTCHA
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                onChange={(val) => setCaptchaVal(val)}
               />
-              <label
-                className="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 ml-1"
-                htmlFor="remember-me"
-              >
-                Remember this device
-              </label>
             </div>
 
             <div className="pt-2">

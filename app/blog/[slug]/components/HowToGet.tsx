@@ -1,9 +1,10 @@
-import { PackageOpen, Download, ListChecks } from "lucide-react";
+import { PackageOpen, Download, ListChecks, BadgeCheck } from "lucide-react";
 
 interface HowToGetProps {
     post: {
         title: string;
         link?: string | null;
+        buy?: string | null;
         category?: string | null;
     };
 }
@@ -61,16 +62,29 @@ export default function HowToGet({ post }: HowToGetProps) {
                 automatically display the <strong>{post.title}</strong>
             </p>
 
-            <div className="mt-6 text-center">
+            <div className="mt-6 text-center flex justify-center gap-2">
                 <a
-                    className="btn inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm ring-1 ring-neutral-200 dark:ring-white/20"
+                    className="btn inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-xl bg-success text-white hover:bg-success/90 transition-colors shadow-sm ring-1 ring-neutral-200 dark:ring-white/20"
                     href={post.link ?? "#"}
                     rel="noopener noreferrer"
                     target="_blank"
                 >
                     <Download className="w-4 h-4" />
-                    <span>Download {post.title} </span>
+                    <span>Download Font</span>
                 </a>
+
+                {post.buy && (
+                    <a
+                        className="btn inline-flex items-center gap-2 px-3 py-2 text-sm font-semibold rounded-xl bg-primary text-white hover:bg-primary/90 transition-colors shadow-sm ring-1 ring-neutral-200 dark:ring-white/20"
+                        href={post.buy}
+                        rel="noopener noreferrer"
+                        target="_blank"
+                    >
+                        <BadgeCheck className="w-4 h-4" />
+                        <span>Buy License</span>
+                    </a>
+                )}
+
             </div>
 
             <p>It is simple to embed for use on the web by:</p>
