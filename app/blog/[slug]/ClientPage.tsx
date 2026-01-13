@@ -158,7 +158,7 @@ export default async function ClientPage({ params }: Props) {
         />
 
         {/* Structured sections dynamic */}
-        <SectionComponent post={post} />
+        {/* <SectionComponent post={post} /> */}
 
         <FontBlog />
 
