@@ -26,6 +26,7 @@ type ParsedRow = {
   tags?: string[];
   category?: string | null;
   link?: string | null;
+  buy?: string | null;
   published?: boolean;
   publishedAt?: string | null;
   metaTitle?: string | null;
@@ -53,6 +54,7 @@ export default function ImportPostsModal({
         Tags: "news,intro,update",
         Category: "Announcements",
         Link: "https://example.com/read-more",
+        Buy: "https://example.com/buy-now",
         Published: "true/false",
         PublishedAt: "2025-01-10T08:00:00Z",
         MetaTitle: "SEO Title (optional)",
@@ -72,6 +74,7 @@ export default function ImportPostsModal({
         Tags: "news,intro,update",
         Category: "Announcements",
         Link: "https://example.com/welcome",
+        Buy: "https://example.com/buy-welcome",
         Published: true,
         PublishedAt: "2025-01-10T08:00:00Z",
         MetaTitle: "Welcome | My Blog",
@@ -88,6 +91,7 @@ export default function ImportPostsModal({
         Tags: "Cricut,DIY,Crafting",
         Category: "Tutorials",
         Link: "",
+        Buy: "",
         Published: false,
         PublishedAt: "",
         MetaTitle: "Cricut Guide for Beginners",
@@ -123,16 +127,16 @@ export default function ImportPostsModal({
         const tags =
           typeof r.Tags === "string"
             ? r.Tags.split(/[\n,]/)
-                .map((t: string) => t.trim())
-                .filter(Boolean)
+              .map((t: string) => t.trim())
+              .filter(Boolean)
             : Array.isArray(r.Tags)
               ? r.Tags
               : [];
         const images =
           typeof r.Images === "string"
             ? r.Images.split(/[\n,]/)
-                .map((t: string) => t.trim())
-                .filter(Boolean)
+              .map((t: string) => t.trim())
+              .filter(Boolean)
             : Array.isArray(r.Images)
               ? r.Images
               : [];
@@ -147,6 +151,7 @@ export default function ImportPostsModal({
           tags,
           category: r.Category || r.category || null,
           link: r.Link || r.link || null,
+          buy: r.Buy || r.buy || null,
           published:
             typeof r.Published === "string"
               ? /^(true|1|published|yes)$/i.test(r.Published)

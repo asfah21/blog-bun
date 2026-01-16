@@ -4,17 +4,21 @@ import { prisma } from "@/lib/prisma";
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { id: string } },
+  props: { params: Promise<{ id: string }> },
 ) {
   try {
+    const params = await props.params;
     const id = params.id;
 
     await prisma.post.delete({ where: { id } });
 
     return NextResponse.json({ ok: true });
   } catch (e: any) {
-    console.error(e);
+    console.error("DELETE Error:", e);
 
-    return NextResponse.json({ error: "Failed to delete" }, { status: 500 });
+    return NextResponse.json(
+      { error: e.message || "Failed to delete" },
+      { status: 500 },
+    );
   }
 }

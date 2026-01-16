@@ -160,7 +160,7 @@ export default async function ClientPage({ params }: Props) {
         {/* Structured sections dynamic */}
         {/* <SectionComponent post={post} /> */}
 
-        <FontBlog />
+        <FontBlog post={post} />
 
         {/* <ImageSlider images={post.images ?? []} /> */}
 

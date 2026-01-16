@@ -1,8 +1,14 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Card, Input, Button, Tooltip } from "@heroui/react";
-import { MagnifyingGlassIcon, ArrowDownTrayIcon, ArrowPathIcon, ShareIcon } from "@heroicons/react/24/outline";
+import {
+    MagnifyingGlassIcon,
+    ArrowDownTrayIcon,
+    ArrowPathIcon,
+    ShareIcon,
+} from "@heroicons/react/24/outline";
+import { downloadFont, getFontPreview } from "@/app/actions/font";
 
 type FontVariant = {
     name: string;
@@ -14,29 +20,72 @@ type Font = {
     variants: FontVariant[];
 };
 
-const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-        opacity: 1,
-        y: 0,
-        transition: { duration: 0.6, ease: "easeOut" },
-    },
-};
+interface FontBlogProps {
+    post?: {
+        title: string;
+        slug: string;
+        link?: string | null;
+    };
+}
 
-export default function FontBlog() {
-    const [fonts, setFonts] = useState<Font[]>([]);
+export default function FontBlog({ post }: FontBlogProps) {
     const [previewText, setPreviewText] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
-    const [fontSize, setFontSize] = useState<number>(55);
+    const [downloading, setDownloading] = useState<boolean>(false);
+    const [fontUrl, setFontUrl] = useState<string | null>(null);
+    const [fontError, setFontError] = useState<string | null>(null);
+    const [fontSize, setFontSize] = useState<number>(75);
     const [textColor, setTextColor] = useState("#000000");
     const [backgroundColor, setBackgroundColor] = useState("#ffffff");
+
+    // Load font preview data
+    useEffect(() => {
+        let isMounted = true;
+        const fetchFont = async () => {
+            if (!post?.link) {
+                setLoading(false);
+                return;
+            }
+            try {
+                setLoading(true);
+                const res = await getFontPreview(post.link);
+                if (isMounted) {
+                    if (res.success && res.url) {
+                        setFontUrl(res.url);
+                    } else {
+                        setFontError(res.error || "Failed to load font");
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                if (isMounted) setLoading(false);
+            }
+        };
+
+        fetchFont();
+        return () => { isMounted = false; };
+    }, [post?.link]);
+
+    // Construct font object only if we have a loaded URL
+    const font: Font | null = post && fontUrl
+        ? {
+            name: post.title,
+            variants: [
+                {
+                    name: post.title,
+                    file: fontUrl,
+                },
+            ],
+        }
+        : null;
 
     // Initialize colors based on theme
     useEffect(() => {
         // Function to update colors based on theme
         const updateColors = (isDark: boolean) => {
             if (isDark) {
-                setBackgroundColor("#0c0c0cff"); // rgb(48, 56, 70) converted to hex
+                setBackgroundColor("#0c0c0cff");
                 setTextColor("#ffffff");
             } else {
                 setBackgroundColor("#ffffff");
@@ -63,20 +112,6 @@ export default function FontBlog() {
         return () => observer.disconnect();
     }, []);
 
-    useEffect(() => {
-        setLoading(true);
-        fetch("/api/fonts/blog")
-            .then((res) => res.json())
-            .then((data) => {
-                setFonts(data.fonts);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Error fetching fonts:", err);
-                setLoading(false);
-            });
-    }, []);
-
     const resetSettings = () => {
         setFontSize(55);
         setPreviewText("");
@@ -90,8 +125,48 @@ export default function FontBlog() {
         }
     };
 
-    return (
+    const handleDownload = async () => {
+        if (!post?.link || !post?.slug) return;
+        try {
+            setDownloading(true);
+            const res = await downloadFont(post.link, post.slug);
 
+            if (res.success && res.data) {
+                // Create a blob from base64
+                const byteCharacters = atob(res.data);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], { type: res.type });
+
+                // Trigger download
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                link.href = url;
+                // Try to guess extension or default to zip/ttf based on mime? 
+                // We'll trust the user wants the file name from title or link
+                const extension = post.link.split('.').pop() || "zip";
+                link.download = `${post.slug}.${extension}`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            } else {
+                alert("Failed to download: " + res.error);
+            }
+        } catch (error) {
+            console.error(error);
+            alert("Download error");
+        } finally {
+            setDownloading(false);
+        }
+    };
+
+    if (!font) return null;
+
+    return (
         <div className="w-full max-w-screen-2xl">
             <Card
                 className="w-full bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border border-none p-2 md:p-5"
@@ -109,7 +184,9 @@ export default function FontBlog() {
                                 classNames={{
                                     inputWrapper: "bg-default-200/50 shadow-none",
                                 }}
-                                startContent={<MagnifyingGlassIcon className="w-4 h-3 text-default-400" />}
+                                startContent={
+                                    <MagnifyingGlassIcon className="w-4 h-3 text-default-400" />
+                                }
                                 size="md"
                                 onFocus={(e: React.FocusEvent<HTMLInputElement>) => {
                                     e.target.style.outline = "none";
@@ -119,7 +196,6 @@ export default function FontBlog() {
 
                         <div className="flex-1 flex justify-center px-4 min-w-[30%]">
                             <div className="flex items-center gap-3 w-full max-w-[150px]">
-                                {/* <span className="hidden sm:inline">Size</span> */}
                                 <input
                                     type="range"
                                     min={20}
@@ -155,25 +231,21 @@ export default function FontBlog() {
                                 </div>
                             </div>
 
-                            <div className="h-6 w-px bg-default-300 hidden md:block"></div>
+                            <div className="h-6 w-px bg-default-300 hidden md:block" />
 
                             <div className="flex items-center gap-1">
                                 <Tooltip content="Reset Settings">
                                     <Button
                                         isIconOnly
-                                        variant="light"
                                         size="sm"
+                                        variant="light"
                                         onPress={resetSettings}
                                     >
                                         <ArrowPathIcon className="w-5 h-5 text-default-500" />
                                     </Button>
                                 </Tooltip>
                                 <Tooltip content="Share">
-                                    <Button
-                                        isIconOnly
-                                        variant="light"
-                                        size="sm"
-                                    >
+                                    <Button isIconOnly size="sm" variant="light">
                                         <ShareIcon className="w-5 h-5 text-default-500" />
                                     </Button>
                                 </Tooltip>
@@ -184,68 +256,60 @@ export default function FontBlog() {
                     {/* Font Grid */}
                     <div className="grid grid-cols-1 gap-6">
                         {loading ? (
-                            Array.from({ length: 3 }).map((_, i) => (
-                                <div key={i} className="h-40 w-full animate-pulse rounded-xl bg-default-100/50" />
+                            Array.from({ length: 1 }).map((_, i) => (
+                                <div
+                                    key={i}
+                                    className="h-40 w-full animate-pulse rounded-xl bg-default-100/50"
+                                />
                             ))
                         ) : (
-                            fonts.map((font, index) => (
-                                <motion.div
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.1 }}
-                                    key={index}
-                                    className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
-                                >
-                                    <style jsx global>{`
-                                            @font-face {
-                                                font-family: "${font.variants[0].name}";
-                                                src: url("${font.variants[0].file}");
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
+                            >
+                                <style jsx global>{`
+                  @font-face {
+                    font-family: "${font.name}";
+                    src: url("${font.variants[0].file}");
+                  }
+                `}</style>
+
+                                <div className="p-4 flex flex-col gap-4">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex gap-2">
+                                            <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
+                                                {font.name}
+                                            </span>
+                                        </div>
+
+                                        <Button
+                                            color="primary"
+                                            isLoading={downloading}
+                                            size="sm"
+                                            startContent={
+                                                !downloading && <ArrowDownTrayIcon className="w-4 h-4" />
                                             }
-                                        `}</style>
-
-                                    <div className="p-4 flex flex-col gap-4">
-                                        <div className="flex justify-between items-start">
-                                            <div className="flex gap-2">
-                                                <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
-                                                    {font.name}
-                                                </span>
-                                                {/* <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20">
-                                                        Premium
-                                                    </span> */}
-                                            </div>
-
-                                            <Button
-                                                size="sm"
-                                                color="primary"
-                                                variant="flat"
-                                                startContent={<ArrowDownTrayIcon className="w-4 h-4" />}
-                                                onPress={() => {
-                                                    const link = document.createElement("a");
-                                                    link.href = `/fonts/${font.name}.zip`;
-                                                    link.download = `${font.name}.zip`;
-                                                    document.body.appendChild(link);
-                                                    link.click();
-                                                    document.body.removeChild(link);
-                                                }}
-                                            >
-                                                Download
-                                            </Button>
-                                        </div>
-
-                                        <div
-                                            className="w-full overflow-hidden text-ellipsis whitespace-nowrap py-4 px-4 rounded-lg transition-colors border border-dashed border-default-300"
-                                            style={{
-                                                fontFamily: font.variants[0].name,
-                                                fontSize: `${fontSize}px`,
-                                                color: textColor,
-                                                backgroundColor: backgroundColor,
-                                            }}
+                                            variant="flat"
+                                            onPress={handleDownload}
                                         >
-                                            {previewText || font.variants[0].name}
-                                        </div>
+                                            {downloading ? "Downloading..." : "Download"}
+                                        </Button>
                                     </div>
-                                </motion.div>
-                            ))
+
+                                    <div
+                                        className="w-full overflow-hidden text-ellipsis whitespace-nowrap py-4 px-4 rounded-lg transition-colors border border-dashed border-default-300"
+                                        style={{
+                                            fontFamily: `"${font.name}", sans-serif`,
+                                            fontSize: `${fontSize}px`,
+                                            color: textColor,
+                                            backgroundColor: backgroundColor,
+                                        }}
+                                    >
+                                        {previewText || font.name}
+                                    </div>
+                                </div>
+                            </motion.div>
                         )}
                     </div>
                 </div>

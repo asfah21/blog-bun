@@ -55,6 +55,8 @@ interface PostRow {
   updatedAt: string;
   tags: string[];
   category: string | null;
+  link?: string | null;
+  buy?: string | null;
   author?: {
     id: string;
     name: string | null;
@@ -120,6 +122,8 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
       Author: p.author?.name || "-",
       Category: p.category || "-",
       Tags: (p.tags ?? []).join(", "),
+      Link: p.link || "-",
+      Buy: p.buy || "-",
       Status: p.published ? "Published" : "Draft",
       "Published At": p.publishedAt
         ? new Date(p.publishedAt).toLocaleString("id-ID")
@@ -140,6 +144,8 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
       { wch: 20 },
       { wch: 16 },
       { wch: 24 },
+      { wch: 30 }, // Link
+      { wch: 30 }, // Buy
       { wch: 12 },
       { wch: 20 },
       { wch: 20 },
@@ -410,15 +416,23 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                                       const ok = confirm("Delete this post?");
 
                                       if (!ok) return;
+                                      if (!p.id) {
+                                        alert("Error: Post ID is missing");
+                                        return;
+                                      }
                                       const res = await fetch(
                                         `/api/dashboard/posts/${p.id}`,
                                         { method: "DELETE" },
                                       );
 
-                                      if (!res.ok) throw new Error("Failed");
+                                      if (!res.ok) {
+                                        const data = await res.json();
+                                        throw new Error(data.error || "Failed");
+                                      }
                                       router.refresh();
-                                    } catch (e) {
+                                    } catch (e: any) {
                                       console.error(e);
+                                      alert(e.message);
                                     }
                                   }}
                                 >
