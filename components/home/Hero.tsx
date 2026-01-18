@@ -70,7 +70,7 @@ export default function Hero() {
               >
                 Explore{" "}
                 <span className="tracking-tight inline font-bold from-success to-primary bg-clip-text text-transparent bg-gradient-to-b">
-                  AZRA
+                  LISTOFONT
                 </span>{" "}
                 &nbsp;
                 <br className="inline" />
@@ -131,7 +131,7 @@ export default function Hero() {
                   radius="lg"
                 >
                   <Image
-                    alt="Azra Management Assets"
+                    alt="Listofont Management Assets"
                     className="object-cover"
                     height={300}
                     src="/img-font.jpg"

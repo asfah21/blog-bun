@@ -48,10 +48,10 @@ export const Navbar = () => {
                   <Logo />
                 </span>
               </div>
-              <h1 className="text-xl font-bold text-foreground">AZRA</h1>
+              <h1 className="text-xl font-bold text-foreground">LISTOFONT</h1>
             </div>
             {/* <Logo />
-            <p className="font-bold text-inherit">AZRA</p> */}
+            <p className="font-bold text-inherit">LISTOFONT</p> */}
           </NextLink>
         </NavbarBrand>
       </NavbarContent>

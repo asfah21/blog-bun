@@ -22,7 +22,7 @@ export async function generateMetadata({
   if (!post) return {};
 
   return {
-    title: `${post.title} – Azra Blog`,
+    title: `${post.title} – Listofont Blog`,
     description: post.description,
     openGraph: { title: post.title, description: post.description },
   };

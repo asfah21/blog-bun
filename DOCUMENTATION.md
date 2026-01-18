@@ -1,8 +1,8 @@
-### Dokumentasi AZRA-BLOG - Asset Management System v0.3.1 (11/12/2025)
+### Dokumentasi LISTOFONT-BLOG - Asset Management System v0.3.1 (11/12/2025)
 
 ## 🏢 Tentang Project
 
-**AZRA** adalah sistem manajemen aset untuk kebutuhan pengelolaan unit/equipment, work order, dan maintenance tracking. Sistem ini dibangun dengan stack modern, fokus pada skalabilitas, keamanan, dan kemudahan penggunaan.
+**LISTOFONT** adalah sistem manajemen aset untuk kebutuhan pengelolaan unit/equipment, work order, dan maintenance tracking. Sistem ini dibangun dengan stack modern, fokus pada skalabilitas, keamanan, dan kemudahan penggunaan.
 
 ### 🎯 Tujuan Utama
 - Manajemen aset dan equipment terpusat
@@ -304,6 +304,6 @@ Catatan: Operasi CRUD aset/user/WO dapat di-handle melalui halaman dashboard & s
 
 ---
 
-**AZRA Asset Management System** - Made with ❤️ Azvan IT
+**LISTOFONT Asset Management System** - Made with ❤️ Azvan IT
 
 *Dokumentasi ini akan diperbarui secara berkala sesuai dengan perkembangan sistem.*

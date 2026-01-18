@@ -283,7 +283,7 @@ export default function FontBlog({ post }: FontBlogProps) {
                                             </span>
                                         </div>
 
-                                        <Button
+                                        {/* <Button
                                             color="primary"
                                             isLoading={downloading}
                                             size="sm"
@@ -294,7 +294,7 @@ export default function FontBlog({ post }: FontBlogProps) {
                                             onPress={handleDownload}
                                         >
                                             {downloading ? "Downloading..." : "Download"}
-                                        </Button>
+                                        </Button> */}
                                     </div>
 
                                     <div

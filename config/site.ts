@@ -1,9 +1,9 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "AZRA - PT GSI",
+  name: "LISTOFONT - Free Download Font",
   description:
-    "Discover AZRA a stunning asset management apps designed for simplicity.",
+    "Discover LISTOFONT a stunning asset management apps designed for simplicity.",
   navItems: [
     {
       label: "Home",

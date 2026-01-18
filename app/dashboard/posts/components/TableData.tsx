@@ -55,7 +55,7 @@ import * as XLSX from "xlsx";
 import { AddForms } from "./AddForm";
 import AssetDetailModal from "./AssetDetailModal";
 import { EditAssetModal } from "./EditAssetModal";
-import { ImportAssetModal } from "./ImportAssetModal";
+// import { ImportAssetModal } from "./ImportAssetModal";
 import { DeleteAssetModal } from "./DeleteAssetModal";
 import MaintenanceLogModal from "./MaintenanceLogModal";
 
@@ -743,7 +743,7 @@ export default function TableDatas({
       </div>
 
       {/* Modal Import Asset */}
-      <div className="mx-4">
+      {/* <div className="mx-4">
         <Modal
           isOpen={isImportOpen}
           placement="top-center"
@@ -760,7 +760,7 @@ export default function TableDatas({
             )}
           </ModalContent>
         </Modal>
-      </div>
+      </div> */}
 
       {/* Modal Delete Asset */}
       <DeleteAssetModal

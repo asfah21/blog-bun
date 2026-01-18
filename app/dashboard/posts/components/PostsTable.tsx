@@ -57,6 +57,8 @@ interface PostRow {
   category: string | null;
   link?: string | null;
   buy?: string | null;
+  downloadCount: number;
+  buyCount: number;
   author?: {
     id: string;
     name: string | null;
@@ -121,6 +123,8 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
       Slug: p.slug,
       Author: p.author?.name || "-",
       Category: p.category || "-",
+      "Click Count": p.downloadCount || 0,
+      "Buy Count": p.buyCount || 0,
       Tags: (p.tags ?? []).join(", "),
       Link: p.link || "-",
       Buy: p.buy || "-",
@@ -131,9 +135,6 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
       "Created At": p.createdAt
         ? new Date(p.createdAt).toLocaleString("id-ID")
         : "",
-      "Updated At": p.updatedAt
-        ? new Date(p.updatedAt).toLocaleString("id-ID")
-        : "",
     }));
 
     const ws = XLSX.utils.json_to_sheet(exportData);
@@ -143,11 +144,12 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
       { wch: 30 },
       { wch: 20 },
       { wch: 16 },
+      { wch: 12 }, // Click Count
+      { wch: 12 }, // Buy Count
       { wch: 24 },
       { wch: 30 }, // Link
       { wch: 30 }, // Buy
       { wch: 12 },
-      { wch: 20 },
       { wch: 20 },
       { wch: 20 },
     ];
@@ -275,20 +277,16 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                 <TableHeader>
                   <TableColumn>POST</TableColumn>
                   <TableColumn>AUTHOR</TableColumn>
-                  {/* <TableColumn>CATEGORY</TableColumn> */}
-                  <TableColumn>TAGS</TableColumn>
+                  <TableColumn>BUY COUNT</TableColumn>
+                  <TableColumn>CLICK COUNT</TableColumn>
                   <TableColumn>STATUS</TableColumn>
                   <TableColumn>CREATED</TableColumn>
-                  <TableColumn>UPDATED</TableColumn>
                   <TableColumn>ACTIONS</TableColumn>
                 </TableHeader>
                 <TableBody>
                   {paginationData.items.map((p) => {
                     const created = p.createdAt
                       ? new Date(p.createdAt).toLocaleDateString()
-                      : "";
-                    const updated = p.updatedAt
-                      ? new Date(p.updatedAt).toLocaleDateString()
                       : "";
                     const publishedAt = p.publishedAt
                       ? new Date(p.publishedAt).toLocaleDateString()
@@ -332,32 +330,25 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                             name={p.author?.name || "-"}
                           />
                         </TableCell>
-                        {/* <TableCell>
-                          <Chip className="capitalize" color="default" size="sm" variant="flat">
-                            {p.category || "-"}
-                          </Chip>
-                        </TableCell> */}
                         <TableCell>
-                          <div className="flex items-center gap-1 flex-wrap">
-                            {(p.tags ?? []).slice(0, 3).map((t) => (
-                              <Chip
-                                key={t}
-                                className="text-xs"
-                                size="sm"
-                                variant="flat"
-                              >
-                                {t}
-                              </Chip>
-                            ))}
-                            {(p.tags?.length ?? 0) > 3 && (
-                              <Chip
-                                className="text-xs"
-                                size="sm"
-                                variant="flat"
-                              >
-                                +{(p.tags?.length ?? 0) - 3}
-                              </Chip>
-                            )}
+                          <Chip
+                            // className="capitalize"
+                            // color="default"
+                            size="sm"
+                            variant="flat"
+                          >
+                            {p.buyCount || 0}
+                          </Chip>
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-1">
+                            <Chip
+                              // color="primary"
+                              size="sm"
+                              variant="flat"
+                            >
+                              {p.downloadCount || 0}
+                            </Chip>
                           </div>
                         </TableCell>
                         <TableCell>
@@ -375,11 +366,6 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                           </span>
                         </TableCell>
                         <TableCell>
-                          <span className="text-sm text-default-600">
-                            {updated}
-                          </span>
-                        </TableCell>
-                        <TableCell>
                           <div className="flex items-center gap-1">
                             <Dropdown>
                               <DropdownTrigger>
@@ -392,7 +378,7 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                                   key="view"
                                   startContent={<Eye className="w-4 h-4" />}
                                   onPress={() =>
-                                    router.push(`/dashboard/posts/${p.slug}`)
+                                    router.push(`/blog/${p.slug}`)
                                   }
                                 >
                                   View

@@ -160,7 +160,7 @@ export function Topbar({
               <Logo />
             </span>
           </div>
-          <h1 className="text-xl font-bold text-foreground">AZRA</h1>
+          <h1 className="text-xl font-bold text-foreground">LISTOFONT</h1>
         </div>
 
         <div className="flex items-center gap-2">
@@ -407,8 +407,8 @@ export function Topbar({
             >
               <div
                 className={`px-4 py-2 h-10 rounded-t-lg rounded-b-none border-b-2 transition-colors flex items-center cursor-pointer ${isActive
-                    ? "bg-content1 border-primary text-primary"
-                    : "bg-transparent border-transparent hover:bg-content3"
+                  ? "bg-content1 border-primary text-primary"
+                  : "bg-transparent border-transparent hover:bg-content3"
                   }`}
               >
                 <span className="text-base mr-2">{tab.icon}</span>

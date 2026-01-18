@@ -174,7 +174,7 @@ function LoginForm() {
                 <Logo />
               </span>
             </div>
-            <h1 className="text-xl font-bold text-foreground">AZRA</h1>
+            <h1 className="text-xl font-bold text-foreground">LISTOFONT</h1>
           </div>
           <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
             Please enter your credentials to access your account
@@ -296,7 +296,7 @@ function LoginForm() {
 
         <CardFooter className="mt-2 flex justify-center py-3 sm:py-6 bg-gray-50 dark:bg-gray-900/50 rounded-b-xl sm:rounded-b-2xl">
           <p className="text-xs text-center text-gray-500">
-            {new Date().getFullYear()} © Azra
+            {new Date().getFullYear()} © Listofont
           </p>
         </CardFooter>
       </Card>
