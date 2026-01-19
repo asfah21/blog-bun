@@ -280,7 +280,7 @@ export default function FontBlog({ post }: FontBlogProps) {
                 className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
                 initial={{ opacity: 0, y: 10 }}
               >
-                <style global jsx>{`
+                <style>{`
                   @font-face {
                     font-family: "${font.name}";
                     src: url("${font.variants[0].file}");

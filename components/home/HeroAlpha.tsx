@@ -1,13 +1,5 @@
 "use client";
 
-import {
-  RiAdminFill,
-  RiAedFill,
-  RiBlueskyFill,
-  RiFocus2Fill,
-  RiGlobalFill,
-  RiTimerFlashFill,
-} from "react-icons/ri";
 import { motion } from "framer-motion";
 
 const fadeIn = {
@@ -32,15 +24,6 @@ const staggerContainer = {
 };
 
 export default function HeroAlpha() {
-  const features = [
-    { title: "Managed focus", icon: <RiFocus2Fill size={22} /> },
-    { title: "Real-time data", icon: <RiTimerFlashFill size={22} /> },
-    { title: "Optimize Performance", icon: <RiAedFill size={22} /> },
-    { title: "Role-based access", icon: <RiAdminFill size={22} /> },
-    { title: "Consistent UI patterns", icon: <RiBlueskyFill size={22} /> },
-    { title: "Accessible from everywhere", icon: <RiGlobalFill size={22} /> },
-  ];
-
   return (
     <motion.section
       className="px-6 md:px-20 relative flex flex-col gap-10 w-full z-20 mt-16 mb-32"
@@ -97,12 +80,12 @@ export default function HeroAlpha() {
           ethically sourced.
         </p>
         <p className="w-full text-small lg:text-medium text-default-500 text-justify">
-          "Free for personal use" fonts are prohibited from being used
-          commercially without the required permission, whereas "free for
-          commercial use" fonts can be used for more extensive purposes. It
+          &quot;Free for personal use&quot; fonts are prohibited from being used
+          commercially without the required permission, whereas &quot;free for
+          commercial use&quot; fonts can be used for more extensive purposes. It
           might be necessary to obtain additional licensing for premium
           typefaces from the original author. Through transparent communication,
-          we are dedicated to supporting designers' rights and encouraging
+          we are dedicated to supporting designers&apos; rights and encouraging
           ethical font usage.
         </p>
       </motion.div>
@@ -120,15 +103,15 @@ export default function HeroAlpha() {
           creative process by offering easily downloadable files and
           customisable previews. Real people who are concerned about quality,
           design integrity, and licensing meticulously arrange and add each
-          typeface. In order to safeguard designers' rights and guarantee that
-          you can download and use fonts with confidence, we take font licensing
-          very seriously. To give you even more choices and support the
-          platform, we also offer affiliate links to carefully chosen
+          typeface. In order to safeguard designers&apos; rights and guarantee
+          that you can download and use fonts with confidence, we take font
+          licensing very seriously. To give you even more choices and support
+          the platform, we also offer affiliate links to carefully chosen
           third-party suppliers as part of our service.
         </p>
         <p className="w-full text-small lg:text-medium text-default-500 text-justify">
           We are dedicated to providing a secure and moral resource for
-          everyone, whether you're a student, teacher, hobbyist, graphic
+          everyone, whether you&apos;re a student, teacher, hobbyist, graphic
           designer, or craftsman. This is because there are a lot of font
           websites that provide dubious or illegal content. Because creativity
           flourishes in a trustworthy environment, we think we can help you

@@ -9,6 +9,7 @@ export interface GridCardPost {
   slug: string;
   description: string | null;
   createdAt: Date;
+  category: string;
   coverImage?: string | null;
 }
 
@@ -65,15 +66,13 @@ export const GridCard: FC<{ posts: GridCardPost[] }> = ({ posts }) => {
               </div>
 
               <CardBody className="p-5">
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-2">
+                {/* <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-2">
                   {post.description || "No description available."}
-                </p>
+                </p> */}
 
                 <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground">
+                  <span className="capitalize border border-zinc-200/80 bg-zinc-50 text-zinc-600 flex items-center justify-center shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white/80 px-1 rounded-md">{post.category}</span>
                   <span>{formatDate(post.createdAt)}</span>
-                  <span className="pointer-events-none h-8 w-8 rounded-full border border-zinc-200/80 bg-zinc-50 text-zinc-600 flex items-center justify-center shadow-sm dark:border-white/10 dark:bg-white/5 dark:text-white/80">
-                    ●
-                  </span>
                 </div>
               </CardBody>
             </Card>

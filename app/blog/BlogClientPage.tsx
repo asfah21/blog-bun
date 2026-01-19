@@ -11,6 +11,7 @@ export default async function BlogClientPage() {
       description: true,
       createdAt: true,
       coverImage: true,
+      category: true,
     },
     take: 9,
   });

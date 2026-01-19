@@ -199,72 +199,72 @@ export default function Fonts() {
             <div className="grid grid-cols-1 gap-6">
               {loading
                 ? Array.from({ length: 3 }).map((_, i) => (
-                  <div
-                    key={i}
-                    className="h-40 w-full animate-pulse rounded-xl bg-default-100/50"
-                  />
-                ))
+                    <div
+                      key={i}
+                      className="h-40 w-full animate-pulse rounded-xl bg-default-100/50"
+                    />
+                  ))
                 : fonts.map((font, index) => (
-                  <motion.div
-                    key={index}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
-                    initial={{ opacity: 0, y: 10 }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <style>{`
+                    <motion.div
+                      key={index}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
+                      initial={{ opacity: 0, y: 10 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <style>{`
                         @font-face {
                           font-family: "${font.variants[0].name}";
                           src: url("${font.variants[0].file}");
                         }
                       `}</style>
 
-                    <div className="p-4 flex flex-col gap-4">
-                      <div className="flex justify-between items-start">
-                        <div className="flex gap-2">
-                          <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
-                            {font.name}
-                          </span>
-                          {/* <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20">
+                      <div className="p-4 flex flex-col gap-4">
+                        <div className="flex justify-between items-start">
+                          <div className="flex gap-2">
+                            <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
+                              {font.name}
+                            </span>
+                            {/* <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20">
                                                         Premium
                                                     </span> */}
+                          </div>
+
+                          <Button
+                            color="primary"
+                            size="sm"
+                            startContent={
+                              <ArrowDownTrayIcon className="w-4 h-4" />
+                            }
+                            variant="flat"
+                            onPress={() => {
+                              const link = document.createElement("a");
+
+                              link.href = `/fonts/${font.name}.zip`;
+                              link.download = `${font.name}.zip`;
+                              document.body.appendChild(link);
+                              link.click();
+                              document.body.removeChild(link);
+                            }}
+                          >
+                            Download
+                          </Button>
                         </div>
 
-                        <Button
-                          color="primary"
-                          size="sm"
-                          startContent={
-                            <ArrowDownTrayIcon className="w-4 h-4" />
-                          }
-                          variant="flat"
-                          onPress={() => {
-                            const link = document.createElement("a");
-
-                            link.href = `/fonts/${font.name}.zip`;
-                            link.download = `${font.name}.zip`;
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
+                        <div
+                          className="w-full overflow-hidden text-ellipsis whitespace-nowrap py-4 px-4 rounded-lg transition-colors border border-dashed border-default-300"
+                          style={{
+                            fontFamily: font.variants[0].name,
+                            fontSize: `${fontSize}px`,
+                            color: textColor,
+                            backgroundColor: backgroundColor,
                           }}
                         >
-                          Download
-                        </Button>
+                          {previewText || font.variants[0].name}
+                        </div>
                       </div>
-
-                      <div
-                        className="w-full overflow-hidden text-ellipsis whitespace-nowrap py-4 px-4 rounded-lg transition-colors border border-dashed border-default-300"
-                        style={{
-                          fontFamily: font.variants[0].name,
-                          fontSize: `${fontSize}px`,
-                          color: textColor,
-                          backgroundColor: backgroundColor,
-                        }}
-                      >
-                        {previewText || font.variants[0].name}
-                      </div>
-                    </div>
-                  </motion.div>
-                ))}
+                    </motion.div>
+                  ))}
             </div>
           </div>
         </Card>
