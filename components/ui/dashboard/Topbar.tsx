@@ -343,7 +343,7 @@ export function Topbar({
                   // name={getFirstName(session?.user?.name || "User")}
                   size="sm"
                   src={profile?.photo}
-                // src={session?.user?.photo || "https://i.pravatar.cc/150?img=12"}
+                  // src={session?.user?.photo || "https://i.pravatar.cc/150?img=12"}
                 />
                 <div className="hidden lg:flex flex-col items-start">
                   <span className="text-small font-medium text-foreground">
@@ -406,10 +406,11 @@ export function Topbar({
               }}
             >
               <div
-                className={`px-4 py-2 h-10 rounded-t-lg rounded-b-none border-b-2 transition-colors flex items-center cursor-pointer ${isActive
-                  ? "bg-content1 border-primary text-primary"
-                  : "bg-transparent border-transparent hover:bg-content3"
-                  }`}
+                className={`px-4 py-2 h-10 rounded-t-lg rounded-b-none border-b-2 transition-colors flex items-center cursor-pointer ${
+                  isActive
+                    ? "bg-content1 border-primary text-primary"
+                    : "bg-transparent border-transparent hover:bg-content3"
+                }`}
               >
                 <span className="text-base mr-2">{tab.icon}</span>
                 <span className="whitespace-nowrap text-small">

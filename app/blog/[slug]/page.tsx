@@ -1,5 +1,3 @@
-import { notFound } from "next/navigation";
-
 import ClientPage from "./ClientPage";
 
 import { prisma } from "@/lib/prisma";

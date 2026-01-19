@@ -15,7 +15,6 @@ import {
 } from "@heroui/react";
 import NextLink from "next/link";
 import clsx from "clsx";
-import { BsFillLayersFill } from "react-icons/bs";
 import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/config/site";
@@ -24,16 +23,13 @@ import { SearchIcon, Logo } from "@/components/icons";
 
 const SearchInput = (props: any) => {
   const [mounted, setMounted] = useState(false);
+
   useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div className="w-full h-10 bg-default-100 rounded-xl" />;
+  if (!mounted)
+    return <div className="w-full h-10 bg-default-100 rounded-xl" />;
 
-  return (
-    <Input
-      {...props}
-      suppressHydrationWarning
-    />
-  );
+  return <Input {...props} suppressHydrationWarning />;
 };
 
 export const Navbar = () => {
@@ -85,7 +81,6 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem className="hidden lg:flex">
           <SearchInput
-            id="search-desktop"
             aria-label="Search"
             classNames={{
               inputWrapper: "bg-default-100",
@@ -96,6 +91,7 @@ export const Navbar = () => {
                 K
               </Kbd>
             }
+            id="search-desktop"
             labelPlacement="outside"
             placeholder="Search..."
             startContent={
@@ -133,7 +129,6 @@ export const Navbar = () => {
 
       <NavbarMenu>
         <SearchInput
-          id="search-mobile"
           aria-label="Search"
           classNames={{
             inputWrapper: "bg-default-100",
@@ -144,6 +139,7 @@ export const Navbar = () => {
               K
             </Kbd>
           }
+          id="search-mobile"
           labelPlacement="outside"
           placeholder="Search..."
           startContent={

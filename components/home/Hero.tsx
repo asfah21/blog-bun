@@ -45,14 +45,11 @@ export default function Hero() {
       initial="hidden"
       variants={staggerContainer}
     >
-      <motion.div
-        variants={cardVariants}
-        className="w-full"
-      >
+      <motion.div className="w-full" variants={cardVariants}>
         <Card
+          className="w-full p-6 bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border-none"
           radius="lg"
           shadow="sm"
-          className="w-full p-6 bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border-none"
         >
           <section className="flex relative overflow-hidden lg:overflow-visible w-full flex-nowrap justify-between items-center max-w-screen-2xl mx-auto">
             <motion.div
@@ -112,7 +109,9 @@ export default function Hero() {
                   <button
                     aria-label="Copy command"
                     className="ml-2"
-                    onClick={() => navigator.clipboard.writeText("+6282271548976")}
+                    onClick={() =>
+                      navigator.clipboard.writeText("+6282271548976")
+                    }
                   >
                     📋
                   </button>
@@ -138,7 +137,9 @@ export default function Hero() {
                     width={450}
                   />
                   <CardFooter className="justify-between before:bg-white/10 border-white/20 border-1 overflow-hidden py-1 absolute before:rounded-xl rounded-large bottom-1 w-[calc(100%_-_8px)] shadow-small ml-1 z-10">
-                    <p className="text-tiny text-white/80">Exclusive free and premium font</p>
+                    <p className="text-tiny text-white/80">
+                      Exclusive free and premium font
+                    </p>
                     <Button
                       className="text-tiny text-white bg-black/20"
                       color="default"

@@ -5,9 +5,9 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { Alert, Card, CardHeader, CardFooter } from "@heroui/react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
+import ReCAPTCHA from "react-google-recaptcha";
 
 import { Logo } from "@/components/icons";
-import ReCAPTCHA from "react-google-recaptcha";
 
 function LoginForm() {
   const searchParams = useSearchParams();
@@ -21,7 +21,7 @@ function LoginForm() {
       if (remembered) {
         try {
           return JSON.parse(remembered).email || "";
-        } catch { }
+        } catch {}
       }
     }
 
@@ -35,7 +35,7 @@ function LoginForm() {
       if (remembered) {
         try {
           return JSON.parse(remembered).password || "";
-        } catch { }
+        } catch {}
       }
     }
 
@@ -110,6 +110,7 @@ function LoginForm() {
 
     if (!captchaVal) {
       setError("Silakan selesaikan captcha terlebih dahulu.");
+
       return;
     }
 
@@ -273,11 +274,12 @@ function LoginForm() {
               </div>
             </div>
 
-
-
             <div className="flex justify-center w-full">
               <ReCAPTCHA
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"}
+                sitekey={
+                  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+                  "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+                }
                 onChange={(val) => setCaptchaVal(val)}
               />
             </div>

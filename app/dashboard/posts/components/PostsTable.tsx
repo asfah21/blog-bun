@@ -377,9 +377,7 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                                 <DropdownItem
                                   key="view"
                                   startContent={<Eye className="w-4 h-4" />}
-                                  onPress={() =>
-                                    router.push(`/blog/${p.slug}`)
-                                  }
+                                  onPress={() => router.push(`/blog/${p.slug}`)}
                                 >
                                   View
                                 </DropdownItem>
@@ -404,6 +402,7 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
                                       if (!ok) return;
                                       if (!p.id) {
                                         alert("Error: Post ID is missing");
+
                                         return;
                                       }
                                       const res = await fetch(
@@ -413,6 +412,7 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
 
                                       if (!res.ok) {
                                         const data = await res.json();
+
                                         throw new Error(data.error || "Failed");
                                       }
                                       router.refresh();

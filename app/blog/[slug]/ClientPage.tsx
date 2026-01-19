@@ -1,11 +1,12 @@
 import { notFound } from "next/navigation";
-import Image from "next/image";
-import { prisma } from "@/lib/prisma";
 import { Calendar, User2, Tag } from "lucide-react";
+
 import HowToGet from "./components/HowToGet";
 // import ImageSlider from "./components/ImageSlider";
 import BackButton from "./components/BackButton";
 import FontBlog from "./components/FontBlog";
+
+import { prisma } from "@/lib/prisma";
 
 export interface BlogClientArticleProps {
   post: {
@@ -32,28 +33,32 @@ function formatDate(date: Date) {
   });
 }
 
-type Props = { params: { slug: string } }
+type Props = { params: { slug: string } };
 
 const sectionImports = [
   () => import("./sections/SectionA"),
   () => import("./sections/SectionB"),
   () => import("./sections/SectionC"),
   // () => import("./sections/SectionD"),
-]
+];
 
 function getLastDigitFromid(id: string): number | null {
   for (let i = id.length - 1; i >= 0; i--) {
     const ch = id[i];
+
     if (ch >= "0" && ch <= "9") {
       return Number(ch);
     }
   }
+
   return null;
 }
 
 function fallbackDigitFromString(id: string): number | null {
   let sum = 0;
+
   for (let i = 0; i < id.length; i++) sum += id.charCodeAt(i);
+
   return sum % 10;
 }
 
@@ -70,13 +75,15 @@ export default async function ClientPage({ params }: Props) {
   const date = formatDate(post.createdAt);
 
   const rawId = String(post.id ?? "");
+
   if (!rawId) {
     return notFound();
   }
 
   const len = sectionImports.length;
-  const digit = getLastDigitFromid(rawId) ?? fallbackDigitFromString(rawId) ?? 0;
-  const index = ((digit - 1) % len + len) % len;
+  const digit =
+    getLastDigitFromid(rawId) ?? fallbackDigitFromString(rawId) ?? 0;
+  const index = (((digit - 1) % len) + len) % len;
 
   const mod = await sectionImports[index]();
   const SectionComponent = mod?.default;
@@ -122,7 +129,10 @@ export default async function ClientPage({ params }: Props) {
 
       {/* Title */}
       <h1 className="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-white dark:to-white/70 bg-clip-text text-transparent">
-        {post.title} <span className="text-xs font-semibold text-gray-200 dark:text-gray-800">[{index}]</span>
+        {post.title}{" "}
+        <span className="text-xs font-semibold text-gray-200 dark:text-gray-800">
+          [{index}]
+        </span>
       </h1>
 
       {/* Hero image */}
@@ -173,7 +183,6 @@ export default async function ClientPage({ params }: Props) {
         )}
 
         <HowToGet post={post} />
-
       </article>
     </div>
   );

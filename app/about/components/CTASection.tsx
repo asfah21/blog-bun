@@ -21,9 +21,9 @@ export default function CTASection({ fadeIn }: CTASectionProps) {
           Our Commitment to Excellence
         </h2>
         <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-          Listofont is dedicated to sustainable growth
-          through responsible mining practices, innovative technology, and
-          unwavering commitment to safety and quality.
+          Listofont is dedicated to sustainable growth through responsible
+          mining practices, innovative technology, and unwavering commitment to
+          safety and quality.
         </p>
         <div className="flex flex-col sm:flex-row justify-center gap-4">
           <Button

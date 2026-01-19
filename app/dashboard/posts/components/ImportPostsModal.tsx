@@ -127,16 +127,16 @@ export default function ImportPostsModal({
         const tags =
           typeof r.Tags === "string"
             ? r.Tags.split(/[\n,]/)
-              .map((t: string) => t.trim())
-              .filter(Boolean)
+                .map((t: string) => t.trim())
+                .filter(Boolean)
             : Array.isArray(r.Tags)
               ? r.Tags
               : [];
         const images =
           typeof r.Images === "string"
             ? r.Images.split(/[\n,]/)
-              .map((t: string) => t.trim())
-              .filter(Boolean)
+                .map((t: string) => t.trim())
+                .filter(Boolean)
             : Array.isArray(r.Images)
               ? r.Images
               : [];

@@ -14,7 +14,7 @@ export function VersionApp() {
   );
 }
 
-interface VersiAppProps extends React.HTMLAttributes<HTMLDivElement> { }
+interface VersiAppProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function VersiApp({ className, ...props }: VersiAppProps) {
   return (
