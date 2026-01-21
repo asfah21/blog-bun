@@ -22,7 +22,7 @@ export default async function AdsPage() {
 
                 {/* Bottom Floating Banner */}
                 <div className="col-span-1 md:col-span-2">
-                    <h2 className="text-lg font-semibold mb-4">Bottom Floating Banner (Suggest 728x90 or similar)</h2>
+                    <h2 className="text-lg font-semibold mb-4">Bottom Floating Banner (Suggest 970x90)</h2>
                     <AdsForm position="bottom_floating" initialData={bottomFloatingAd} previewMaxWidth="100%" />
                 </div>
 

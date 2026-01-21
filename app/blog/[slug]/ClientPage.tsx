@@ -102,7 +102,7 @@ export default async function ClientPage({ params }: Props) {
     <>
       <div className="container mx-auto px-4 py-8 text-neutral-800 dark:text-foreground">
         <div className="flex justify-center xl:gap-10">
-          {/* Left Ads */}
+          {/* Left Ads - Hidden on mobile/tablet */}
           <div className="hidden xl:block w-[160px] flex-none">
             <div className="sticky top-24">
               <AdsSide imageUrl={leftAd?.imageUrl} linkUrl={leftAd?.linkUrl} />
@@ -212,7 +212,7 @@ export default async function ClientPage({ params }: Props) {
             </article>
           </div>
 
-          {/* Right Ads */}
+          {/* Right Ads - Hidden on mobile/tablet */}
           <div className="hidden xl:block w-[160px] flex-none">
             <div className="sticky top-24">
               <AdsSide imageUrl={rightAd?.imageUrl} linkUrl={rightAd?.linkUrl} />

@@ -76,14 +76,14 @@ export default function FontBlog({ post }: FontBlogProps) {
   const font: Font | null =
     post && fontUrl
       ? {
-          name: post.title,
-          variants: [
-            {
-              name: post.title,
-              file: fontUrl,
-            },
-          ],
-        }
+        name: post.title,
+        variants: [
+          {
+            name: post.title,
+            file: fontUrl,
+          },
+        ],
+      }
       : null;
 
   // Initialize colors based on theme
@@ -181,7 +181,7 @@ export default function FontBlog({ post }: FontBlogProps) {
   return (
     <div className="w-full max-w-screen-2xl">
       <Card
-        className="w-full bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border border-none p-2 md:p-5"
+        className="w-full bg-background/60 dark:bg-default-100/50 backdrop-blur-lg border border-default-200 p-2 md:p-5"
         radius="lg"
         shadow="sm"
       >

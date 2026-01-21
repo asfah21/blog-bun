@@ -28,12 +28,12 @@ const AdsFloatingBottom = ({ imageUrl, linkUrl }: AdsFloatingBottomProps) => {
 
     return (
         <div className="fixed bottom-0 left-0 right-0 z-[100] pointer-events-none">
-            <div className="bg-white dark:bg-neutral-900 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-t border-neutral-200 dark:border-neutral-800 w-full pointer-events-auto">
-                <div className="relative mx-auto max-w-[970px] pr-3 py-0 flex justify-center items-center">
+            <div className="bg-white dark:bg-neutral-900 shadow-[0_-4px_20px_rgba(0,0,0,0.1)] border-none w-full pointer-events-auto">
+                <div className="relative mx-auto max-w-[970px] py-0 flex justify-center items-center">
                     {/* Close Button */}
                     <button
                         onClick={() => setIsVisible(false)}
-                        className="absolute top-1 right-1 md:top-2 md:right-2 bg-white/80 dark:bg-black/50 hover:bg-white dark:hover:bg-black/70 text-neutral-600 dark:text-neutral-200 p-1 rounded-full transition-colors backdrop-blur-sm z-10"
+                        className="absolute left-full top-0 ml-[2px] bg-neutral-200 dark:bg-neutral-800 hover:bg-neutral-300 dark:hover:bg-neutral-700 text-neutral-600 dark:text-neutral-400 p-1 rounded-md transition-colors"
                         aria-label="Close ad"
                     >
                         <X size={16} />
