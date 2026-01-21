@@ -5,7 +5,6 @@ generator client {
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
- 
 }
 
 model Post {
@@ -70,3 +69,13 @@ model User {
   createdAt   DateTime    @default(now())
 }
 
+model Ad {
+  id          String   @id @default(cuid())
+  position    String   @unique // e.g., "left_sidebar", "right_sidebar"
+  imageUrl    String
+  linkUrl     String?
+  label       String?  // Alt text or simple label
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

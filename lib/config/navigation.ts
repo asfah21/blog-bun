@@ -15,6 +15,13 @@ export const defaultNavItems = [
     icon: "package",
     defaultRoles: ["admin_heavy", "admin_elec"],
   },
+  {
+    id: "ads",
+    title: "Ads",
+    path: "/dashboard/ads",
+    icon: "ads",
+    defaultRoles: ["admin_heavy", "admin_elec"],
+  },
 
   {
     id: "users",

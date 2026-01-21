@@ -3,8 +3,12 @@ import { Calendar, User2, Tag } from "lucide-react";
 
 import HowToGet from "./components/HowToGet";
 // import ImageSlider from "./components/ImageSlider";
-import BackButton from "./components/BackButton";
+// import BackButton from "./components/BackButton";
 import FontBlog from "./components/FontBlog";
+import AdsSide from "./components/AdsSide";
+import AdsBanner from "./components/AdsBanner";
+import AdsFloatingBottom from "./components/AdsFloatingBottom";
+import { getAds } from "@/app/actions/ads";
 
 import { prisma } from "@/lib/prisma";
 
@@ -69,6 +73,12 @@ export default async function ClientPage({ params }: Props) {
     include: { author: true },
   });
 
+  const { data: ads } = await getAds();
+  const leftAd = ads?.find((a) => a.position === "left_sidebar");
+  const rightAd = ads?.find((a) => a.position === "right_sidebar");
+  const topAd = ads?.find((a) => a.position === "top_banner");
+  const bottomFloatingAd = ads?.find((a) => a.position === "bottom_floating");
+
   if (!post) {
     return notFound();
   }
@@ -89,101 +99,133 @@ export default async function ClientPage({ params }: Props) {
   const SectionComponent = mod?.default;
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 text-neutral-800 dark:text-foreground">
-      {/* Back link */}
-      <div className="mb-6">
-        <BackButton />
-      </div>
+    <>
+      <div className="container mx-auto px-4 py-8 text-neutral-800 dark:text-foreground">
+        <div className="flex justify-center xl:gap-10">
+          {/* Left Ads */}
+          <div className="hidden xl:block w-[160px] flex-none">
+            <div className="sticky top-24">
+              <AdsSide imageUrl={leftAd?.imageUrl} linkUrl={leftAd?.linkUrl} />
+            </div>
+          </div>
 
-      {/* Meta */}
-      <div className="flex items-center gap-3 text-sm text-foreground/70">
-        {post.author?.avatar ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            alt={post.author?.name ?? "Author"}
-            className="h-9 w-9 rounded-full ring-1 ring-neutral-300 dark:ring-white/15 object-cover"
-            src={post.author?.avatar}
-          />
-        ) : (
-          <div className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-white/10 ring-1 ring-neutral-300 dark:ring-white/15" />
-        )}
-        <div className="flex flex-col">
-          <span className="font-medium text-foreground/90 inline-flex items-center gap-1">
-            <User2 className="w-3.5 h-3.5 opacity-70" />{" "}
-            {post.author?.name ?? "Creative Font"}
-          </span>
-          <div className="flex flex-wrap items-center gap-2 mt-0.5">
-            <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
-              <Tag className="w-3 h-3 opacity-70" />{" "}
-              {post.category ?? "General"}
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
-              <Calendar className="w-3 h-3 opacity-70" /> {date ?? "General"}
-            </span>
-            {/* <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg_white/5 border border-neutral-200 dark:border-white/10">
+          {/* Main Content */}
+          <div className="max-w-3xl w-full min-w-0">
+            {/* Back link */}
+            {/* <div className="mb-6">
+            <BackButton />
+          </div> */}
+
+            {/* Title */}
+            <h1 className="mb-5 text-3xl md:text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-white dark:to-white/70 bg-clip-text text-transparent">
+              {post.title}{" "}
+              <span className="text-xs font-semibold text-gray-200 dark:text-gray-800">
+                [{index}]
+              </span>
+            </h1>
+
+            {/* Meta */}
+            <div className="flex items-center gap-3 text-sm text-foreground/70">
+              {post.author?.avatar ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  alt={post.author?.name ?? "Author"}
+                  className="h-9 w-9 rounded-full ring-1 ring-neutral-300 dark:ring-white/15 object-cover"
+                  src={post.author?.avatar}
+                />
+              ) : (
+                <div className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-white/10 ring-1 ring-neutral-300 dark:ring-white/15" />
+              )}
+              <div className="flex flex-col">
+                <span className="font-medium text-foreground/90 inline-flex items-center gap-1">
+                  <User2 className="w-3.5 h-3.5 opacity-70" />{" "}
+                  {post.author?.name ?? "Creative Font"}
+                </span>
+                <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                  <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
+                    <Tag className="w-3 h-3 opacity-70" />{" "}
+                    {post.category ?? "General"}
+                  </span>
+                  <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
+                    <Calendar className="w-3 h-3 opacity-70" /> {date ?? "General"}
+                  </span>
+                  {/* <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg_white/5 border border-neutral-200 dark:border-white/10">
               <Tag className="w-3 h-3 opacity-70" /> {date ?? "1 January 2026"}
             </span> */}
-          </div>
-        </div>
-      </div>
-
-      {/* Title */}
-      <h1 className="mt-5 text-3xl md:text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-white dark:to-white/70 bg-clip-text text-transparent">
-        {post.title}{" "}
-        <span className="text-xs font-semibold text-gray-200 dark:text-gray-800">
-          [{index}]
-        </span>
-      </h1>
-
-      {/* Hero image */}
-      <div className="mt-6 rounded-xl overflow-hidden border border-neutral-300 dark:border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)]">
-        <div className="relative aspect-[16/9]">
-          {post.coverImage ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              alt={post.title}
-              className="absolute inset-0 h-full w-full object-cover object-center"
-              src={post.coverImage}
-            />
-          ) : (
-            <div className="absolute inset-0 p-6 flex items-center justify-center bg-gradient-to-br from-neutral-100 via-neutral-200 to-neutral-300 dark:from-[#0D0F16] dark:via-[#141724] dark:to-[#1A1D2B]">
-              <div className="mx-auto max-w-lg text-center">
-                <p className="text-2xl font-semibold">{post.title}</p>
-                <p className="text-sm text-foreground/70 mt-2">
-                  {post.description}
-                </p>
+                </div>
               </div>
             </div>
-          )}
-          <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/10 via-neutral-900/5 to-transparent dark:from-black/40 dark:via-black/10 dark:to-transparent pointer-events-none" />
+
+            {/* Top Ads */}
+            <div className="flex justify-center mt-6">
+              <AdsBanner imageUrl={topAd?.imageUrl} linkUrl={topAd?.linkUrl} />
+            </div>
+
+            {/* Hero image */}
+            <div className="mt-6 rounded-xl overflow-hidden border border-neutral-300 dark:border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)]">
+              <div className="relative aspect-[16/9]">
+                {post.coverImage ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={post.title}
+                    className="absolute inset-0 h-full w-full object-cover object-center"
+                    src={post.coverImage}
+                  />
+                ) : (
+                  <div className="absolute inset-0 p-6 flex items-center justify-center bg-gradient-to-br from-neutral-100 via-neutral-200 to-neutral-300 dark:from-[#0D0F16] dark:via-[#141724] dark:to-[#1A1D2B]">
+                    <div className="mx-auto max-w-lg text-center">
+                      <p className="text-2xl font-semibold">{post.title}</p>
+                      <p className="text-sm text-foreground/70 mt-2">
+                        {post.description}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-neutral-900/10 via-neutral-900/5 to-transparent dark:from-black/40 dark:via-black/10 dark:to-transparent pointer-events-none" />
+              </div>
+            </div>
+
+            {/* Content */}
+            <article className="prose dark:prose-invert max-w-none mt-8 [&_p]:text-justify [&_li]:text-justify [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h3]:mt-6 [&_h3]:text-xl [&_code]:text-xs space-y-12 [&_a:not(.btn)]:text-primary [&_a:not(.btn):hover]:opacity-90">
+              {/* Dynamic (CMS) content */}
+              <div
+                dangerouslySetInnerHTML={{ __html: post.content }}
+                className="text-justify prose max-w-none"
+              />
+
+              {/* Structured sections dynamic */}
+              {/* <SectionComponent post={post} /> */}
+
+              <FontBlog post={post} />
+
+              {/* <ImageSlider images={post.images ?? []} /> */}
+
+              {post.description && (
+                <section>
+                  <blockquote className="mt-2 border-l-4 pl-4 text-foreground/80 italic">
+                    {post.description}
+                  </blockquote>
+                </section>
+              )}
+
+              <HowToGet post={post} />
+            </article>
+          </div>
+
+          {/* Right Ads */}
+          <div className="hidden xl:block w-[160px] flex-none">
+            <div className="sticky top-24">
+              <AdsSide imageUrl={rightAd?.imageUrl} linkUrl={rightAd?.linkUrl} />
+            </div>
+          </div>
         </div>
+
       </div>
-
-      {/* Content */}
-      <article className="prose dark:prose-invert max-w-none mt-8 [&_p]:text-justify [&_li]:text-justify [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h3]:mt-6 [&_h3]:text-xl [&_code]:text-xs space-y-12 [&_a:not(.btn)]:text-primary [&_a:not(.btn):hover]:opacity-90">
-        {/* Dynamic (CMS) content */}
-        <div
-          dangerouslySetInnerHTML={{ __html: post.content }}
-          className="text-justify prose max-w-none"
-        />
-
-        {/* Structured sections dynamic */}
-        {/* <SectionComponent post={post} /> */}
-
-        <FontBlog post={post} />
-
-        {/* <ImageSlider images={post.images ?? []} /> */}
-
-        {post.description && (
-          <section>
-            <blockquote className="mt-2 border-l-4 pl-4 text-foreground/80 italic">
-              {post.description}
-            </blockquote>
-          </section>
-        )}
-
-        <HowToGet post={post} />
-      </article>
-    </div>
+      {/* Floating Bottom Ad - Outside container for better fixed positioning behavior */}
+      <AdsFloatingBottom
+        imageUrl={bottomFloatingAd?.imageUrl}
+        linkUrl={bottomFloatingAd?.linkUrl}
+      />
+    </>
   );
 }

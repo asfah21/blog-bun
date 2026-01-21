@@ -27,6 +27,7 @@ import {
   LuFingerprint,
   LuLayoutDashboard,
   LuList,
+  LuMegaphone,
 } from "react-icons/lu";
 
 import { LoadingSpinner } from "../skeleton";
@@ -83,6 +84,7 @@ export default function UIDashboardLayout({
     luList: <LuList />,
     ListAll: <LuFileType2 />,
     fingerprint: <LuFingerprint />,
+    ads: <LuMegaphone />,
   };
 
   const navItems = useMemo(() => {
@@ -370,9 +372,9 @@ export default function UIDashboardLayout({
         children:
           "children" in item
             ? item.children?.map((c: SidebarNavChild) => ({
-                id: c.id,
-                path: c.path,
-              }))
+              id: c.id,
+              path: c.path,
+            }))
             : "no-children",
       })),
     });
@@ -382,10 +384,12 @@ export default function UIDashboardLayout({
         `❌ Access denied for user role ${session.user?.role} to path ${pathname}`,
       );
       consolePino.warn(
-        `Access denied for user role ${session.user?.role} to path ${pathname}. Available paths:`,
-        navItems.map((item) =>
-          "path" in item ? item.path : `${item.title} (parent menu)`,
-        ),
+        {
+          availablePaths: navItems.map((item) =>
+            "path" in item ? item.path : `${item.title} (parent menu)`,
+          ),
+        },
+        `Access denied for user role ${session.user?.role} to path ${pathname}.`,
       );
       router.replace("/dashboard");
     }
