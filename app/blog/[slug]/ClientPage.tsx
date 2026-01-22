@@ -5,12 +5,13 @@ import HowToGet from "./components/HowToGet";
 // import ImageSlider from "./components/ImageSlider";
 // import BackButton from "./components/BackButton";
 import FontBlog from "./components/FontBlog";
-import AdsSide from "./components/AdsSide";
 import AdsBanner from "./components/AdsBanner";
 import AdsFloatingBottom from "./components/AdsFloatingBottom";
 import { getAds } from "@/app/actions/ads";
 
 import { prisma } from "@/lib/prisma";
+import AdsFlexible from "./components/AdsFlexible";
+import LicenseDetail from "./components/LicenseDetail";
 
 export interface BlogClientArticleProps {
   post: {
@@ -74,10 +75,9 @@ export default async function ClientPage({ params }: Props) {
   });
 
   const { data: ads } = await getAds();
-  const leftAd = ads?.find((a) => a.position === "left_sidebar");
-  const rightAd = ads?.find((a) => a.position === "right_sidebar");
   const topAd = ads?.find((a) => a.position === "top_banner");
   const bottomFloatingAd = ads?.find((a) => a.position === "bottom_floating");
+  const contentFlexibleAd = ads?.find((a) => a.position === "content_flexible");
 
   if (!post) {
     return notFound();
@@ -101,68 +101,31 @@ export default async function ClientPage({ params }: Props) {
   return (
     <>
       <div className="container mx-auto px-4 py-8 text-neutral-800 dark:text-foreground">
-        <div className="flex justify-center xl:gap-10">
-          {/* Left Ads - Hidden on mobile/tablet */}
-          <div className="hidden xl:block w-[160px] flex-none">
-            <div className="sticky top-24">
-              <AdsSide imageUrl={leftAd?.imageUrl} linkUrl={leftAd?.linkUrl} />
-            </div>
-          </div>
-
+        <div className="container mx-auto px-4 py-8 text-neutral-800 dark:text-foreground">
           {/* Main Content */}
-          <div className="max-w-3xl w-full min-w-0">
+          <div className="max-w-[970px] w-full mx-auto">
             {/* Back link */}
             {/* <div className="mb-6">
             <BackButton />
           </div> */}
 
             {/* Title */}
-            <h1 className="mb-5 text-3xl md:text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-white dark:to-white/70 bg-clip-text text-transparent">
+            <h1 className="mb-5 text-center text-3xl md:text-4xl font-extrabold tracking-tight leading-tight bg-gradient-to-r from-neutral-900 via-neutral-800 to-neutral-600 dark:from-white dark:via-white dark:to-white/70 bg-clip-text text-transparent">
               {post.title}{" "}
               <span className="text-xs font-semibold text-gray-200 dark:text-gray-800">
                 [{index}]
               </span>
             </h1>
 
-            {/* Meta */}
-            <div className="flex items-center gap-3 text-sm text-foreground/70">
-              {post.author?.avatar ? (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  alt={post.author?.name ?? "Author"}
-                  className="h-9 w-9 rounded-full ring-1 ring-neutral-300 dark:ring-white/15 object-cover"
-                  src={post.author?.avatar}
-                />
-              ) : (
-                <div className="h-9 w-9 rounded-full bg-neutral-200 dark:bg-white/10 ring-1 ring-neutral-300 dark:ring-white/15" />
-              )}
-              <div className="flex flex-col">
-                <span className="font-medium text-foreground/90 inline-flex items-center gap-1">
-                  <User2 className="w-3.5 h-3.5 opacity-70" />{" "}
-                  {post.author?.name ?? "Creative Font"}
-                </span>
-                <div className="flex flex-wrap items-center gap-2 mt-0.5">
-                  <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
-                    <Tag className="w-3 h-3 opacity-70" />{" "}
-                    {post.category ?? "General"}
-                  </span>
-                  <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg-white/5 border border-neutral-200 dark:border-white/10">
-                    <Calendar className="w-3 h-3 opacity-70" /> {date ?? "General"}
-                  </span>
-                  {/* <span className="inline-flex items-center gap-1.5 text-xs px-2 py-0.5 rounded-md bg-neutral-50 dark:bg_white/5 border border-neutral-200 dark:border-white/10">
-              <Tag className="w-3 h-3 opacity-70" /> {date ?? "1 January 2026"}
-            </span> */}
-                </div>
-              </div>
-            </div>
+
 
             {/* Top Ads */}
             <div className="flex justify-center mt-6">
               <AdsBanner imageUrl={topAd?.imageUrl} linkUrl={topAd?.linkUrl} />
             </div>
 
-            {/* Hero image */}
-            <div className="mt-6 rounded-xl overflow-hidden border border-neutral-300 dark:border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)]">
+            {/* Hero image - Constrained width */}
+            <div className="mt-8 max-w-3xl mx-auto rounded-xl overflow-hidden border border-neutral-300 dark:border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)]">
               <div className="relative aspect-[16/9]">
                 {post.coverImage ? (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -185,8 +148,41 @@ export default async function ClientPage({ params }: Props) {
               </div>
             </div>
 
+            {/* Meta - Compact & Centered */}
+            <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-foreground/70 my-8">
+              <div className="flex items-center gap-2">
+                {post.author?.avatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={post.author?.name ?? "Author"}
+                    className="h-6 w-6 rounded-full ring-1 ring-neutral-200 dark:ring-white/10 object-cover"
+                    src={post.author?.avatar}
+                  />
+                ) : (
+                  <div className="h-6 w-6 rounded-full bg-neutral-200 dark:bg-white/10 ring-1 ring-neutral-200 dark:ring-white/10" />
+                )}
+                <span className="font-semibold text-foreground/90">
+                  {post.author?.name ?? "Creative Font"}
+                </span>
+              </div>
+
+              <div className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
+
+              <div className="flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5 opacity-70" />
+                <span>{date ?? "General"}</span>
+              </div>
+
+              <div className="w-1 h-1 rounded-full bg-neutral-300 dark:bg-neutral-600" />
+
+              <div className="flex items-center gap-1.5">
+                <Tag className="w-3.5 h-3.5 opacity-70" />
+                <span>{post.category ?? "General"}</span>
+              </div>
+            </div>
+
             {/* Content */}
-            <article className="prose dark:prose-invert max-w-none mt-8 [&_p]:text-justify [&_li]:text-justify [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h3]:mt-6 [&_h3]:text-xl [&_code]:text-xs space-y-12 [&_a:not(.btn)]:text-primary [&_a:not(.btn):hover]:opacity-90">
+            <article className="prose dark:prose-invert max-w-none mt-10 [&_p]:text-justify [&_li]:text-justify [&_h2]:mt-12 [&_h2]:scroll-mt-24 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h3]:mt-6 [&_h3]:text-xl [&_code]:text-xs space-y-12 [&_a:not(.btn)]:text-primary [&_a:not(.btn):hover]:opacity-90">
               {/* Dynamic (CMS) content */}
               <div
                 dangerouslySetInnerHTML={{ __html: post.content }}
@@ -208,16 +204,12 @@ export default async function ClientPage({ params }: Props) {
                 </section>
               )}
 
-              <HowToGet post={post} />
+              <HowToGet post={post} ad={contentFlexibleAd} />
+              <AdsFlexible imageUrl={contentFlexibleAd?.imageUrl} linkUrl={contentFlexibleAd?.linkUrl} />
+              <LicenseDetail post={post} />
             </article>
           </div>
 
-          {/* Right Ads - Hidden on mobile/tablet */}
-          <div className="hidden xl:block w-[160px] flex-none">
-            <div className="sticky top-24">
-              <AdsSide imageUrl={rightAd?.imageUrl} linkUrl={rightAd?.linkUrl} />
-            </div>
-          </div>
         </div>
 
       </div>
