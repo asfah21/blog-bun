@@ -204,7 +204,7 @@ export default async function ClientPage({ params }: Props) {
                 </section>
               )}
 
-              <HowToGet post={post} ad={contentFlexibleAd} />
+              <HowToGet post={post} />
               <AdsFlexible imageUrl={contentFlexibleAd?.imageUrl} linkUrl={contentFlexibleAd?.linkUrl} />
               <LicenseDetail post={post} />
             </article>

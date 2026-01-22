@@ -126,7 +126,7 @@ export default function FontBlog({ post }: FontBlogProps) {
     const isDark = document.documentElement.classList.contains("dark");
 
     if (isDark) {
-      setBackgroundColor("#303846");
+      setBackgroundColor("#000000");
       setTextColor("#ffffff");
     } else {
       setBackgroundColor("#ffffff");

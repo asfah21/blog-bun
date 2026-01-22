@@ -8,7 +8,7 @@ import {
   incrementBuyCount,
 } from "@/app/actions/tracking";
 
-import AdsFlexible from "./AdsFlexible";
+
 
 interface HowToGetProps {
   post: {
@@ -20,13 +20,9 @@ interface HowToGetProps {
     downloadCount?: number;
     buyCount?: number;
   };
-  ad?: {
-    imageUrl?: string | null;
-    linkUrl?: string | null;
-  } | null;
 }
 
-export default function HowToGet({ post, ad }: HowToGetProps) {
+export default function HowToGet({ post }: HowToGetProps) {
   const [downloadCount, setDownloadCount] = useState(post.downloadCount || 0);
   const [buyCount, setBuyCount] = useState(post.buyCount || 0);
   const [fakeDownloadHref, setFakeDownloadHref] = useState("#");
@@ -66,7 +62,7 @@ export default function HowToGet({ post, ad }: HowToGetProps) {
   };
 
   return (
-    <section className="space-y-4 !mt-0">
+    <section className="space-y-4 !mt-0 !mb-6">
       <h2 className="inline-flex items-center gap-2">
         <Download className="w-5 h-5 opacity-80" /> How to Download
       </h2>

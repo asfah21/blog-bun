@@ -12,8 +12,8 @@ const AdsFlexible = ({ imageUrl, linkUrl }: AdsFlexibleProps) => {
             <img
                 src={imageUrl}
                 alt="Advertisement"
-                className="w-full h-auto max-w-[970px] mx-auto object-contain rounded-lg"
-                style={{ maxHeight: '300px', minHeight: '90px' }}
+                className="max-w-full h-auto max-w-[970px] object-contain rounded-lg"
+                style={{ maxHeight: '300px' }}
             />
         );
 
@@ -23,24 +23,17 @@ const AdsFlexible = ({ imageUrl, linkUrl }: AdsFlexibleProps) => {
                     href={linkUrl}
                     target="_blank"
                     rel="nofollow noopener noreferrer"
-                    className="block w-full hover:opacity-95 transition-opacity my-6"
+                    className="flex justify-center w-full hover:opacity-95 transition-opacity !mt-0"
                 >
                     {content}
                 </a>
             );
         }
 
-        return <div className="w-full my-6">{content}</div>;
+        return <div className="flex justify-center w-full my-6">{content}</div>;
     }
 
-    // Placeholder if no ads
-    return (
-        <div className="w-full max-w-[970px] mx-auto h-[256px] bg-neutral-100 dark:bg-neutral-800 border-2 border-dashed border-neutral-200 dark:border-neutral-700 rounded-lg flex items-center justify-center my-6">
-            <span className="text-neutral-400 font-medium">
-                Content Ad (970x256 Default - Responsive)
-            </span>
-        </div>
-    );
+    return null;
 };
 
 export default AdsFlexible;
