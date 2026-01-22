@@ -13,17 +13,15 @@ const AdsFloatingBottom = ({ imageUrl, linkUrl }: AdsFloatingBottomProps) => {
 
     if (!isVisible) return null;
 
-    const content = imageUrl ? (
+    if (!imageUrl) return null;
+
+    const content = (
         // eslint-disable-next-line @next/next/no-img-element
         <img
             src={imageUrl}
             alt="Advertisement"
             className="max-w-full h-auto max-h-[90px] object-contain mx-auto"
         />
-    ) : (
-        <div className="w-full h-[90px] flex items-center justify-center bg-neutral-100 dark:bg-neutral-800 text-neutral-400 text-sm border border-neutral-200 dark:border-neutral-700">
-            Ads Space - Fixed Bottom (970x90)
-        </div>
     );
 
     return (

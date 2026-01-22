@@ -120,9 +120,11 @@ export default async function ClientPage({ params }: Props) {
 
 
             {/* Top Ads */}
-            <div className="flex justify-center mt-6">
-              <AdsBanner imageUrl={topAd?.imageUrl} linkUrl={topAd?.linkUrl} />
-            </div>
+            {topAd && (
+              <div className="flex justify-center mt-6">
+                <AdsBanner imageUrl={topAd.imageUrl} linkUrl={topAd.linkUrl} />
+              </div>
+            )}
 
             {/* Hero image - Constrained width */}
             <div className="mt-8 max-w-3xl mx-auto rounded-xl overflow-hidden border border-neutral-300 dark:border-white/10 shadow-[0_10px_30px_-10px_rgba(0,0,0,0.15)] dark:shadow-[0_10px_30px_-10px_rgba(0,0,0,0.35)]">

@@ -79,7 +79,7 @@ export default function AdsForm({ position, initialData, previewMaxWidth = "160p
             </div>
 
             {/* Preview */}
-            {formData.imageUrl && (
+            {formData.imageUrl && formData.isActive && (
                 <div className="mt-4">
                     <p className="text-xs text-neutral-500 mb-1">Preview:</p>
                     <div className="border border-dashed border-neutral-300 p-2 flex justify-center bg-neutral-100 dark:bg-neutral-900">

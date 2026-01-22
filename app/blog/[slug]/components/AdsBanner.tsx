@@ -32,16 +32,8 @@ const AdsBanner = ({ imageUrl, linkUrl }: AdsBannerProps) => {
         return <div className="w-[728px] h-[90px]">{content}</div>;
     }
 
-    // Placeholder if no ads
-    return (
-        <div className="w-[728px] h-[1px] bg-none border-none">
-            <span className="text-center">
-                {/* Ads Space
-                <br />
-                728 x 90 */}
-            </span>
-        </div>
-    );
+    // Return null if no ads to avoid layout shift or placeholders
+    return null;
 };
 
 export default AdsBanner;
