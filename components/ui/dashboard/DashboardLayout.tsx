@@ -372,9 +372,9 @@ export default function UIDashboardLayout({
         children:
           "children" in item
             ? item.children?.map((c: SidebarNavChild) => ({
-              id: c.id,
-              path: c.path,
-            }))
+                id: c.id,
+                path: c.path,
+              }))
             : "no-children",
       })),
     });

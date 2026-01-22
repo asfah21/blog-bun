@@ -8,8 +8,6 @@ import {
   incrementBuyCount,
 } from "@/app/actions/tracking";
 
-
-
 interface HowToGetProps {
   post: {
     slug: string;

@@ -76,14 +76,14 @@ export default function FontBlog({ post }: FontBlogProps) {
   const font: Font | null =
     post && fontUrl
       ? {
-        name: post.title,
-        variants: [
-          {
-            name: post.title,
-            file: fontUrl,
-          },
-        ],
-      }
+          name: post.title,
+          variants: [
+            {
+              name: post.title,
+              file: fontUrl,
+            },
+          ],
+        }
       : null;
 
   // Initialize colors based on theme

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { Calendar, User2, Tag } from "lucide-react";
+import { Calendar, Tag } from "lucide-react";
 
 import HowToGet from "./components/HowToGet";
 // import ImageSlider from "./components/ImageSlider";
@@ -7,12 +7,12 @@ import HowToGet from "./components/HowToGet";
 import FontBlog from "./components/FontBlog";
 import AdsBanner from "./components/AdsBanner";
 import AdsFloatingBottom from "./components/AdsFloatingBottom";
-import { getAds } from "@/app/actions/ads";
-
-import { prisma } from "@/lib/prisma";
 import AdsFlexible from "./components/AdsFlexible";
 import LicenseDetail from "./components/LicenseDetail";
 import RelatedPosts from "./components/RelatedPosts";
+
+import { prisma } from "@/lib/prisma";
+import { getAds } from "@/app/actions/ads";
 
 export interface BlogClientArticleProps {
   post: {
@@ -118,8 +118,6 @@ export default async function ClientPage({ params }: Props) {
               </span>
             </h1>
 
-
-
             {/* Top Ads */}
             {topAd && (
               <div className="flex justify-center mt-6">
@@ -208,19 +206,19 @@ export default async function ClientPage({ params }: Props) {
               )}
 
               <HowToGet post={post} />
-              <AdsFlexible imageUrl={contentFlexibleAd?.imageUrl} linkUrl={contentFlexibleAd?.linkUrl} />
+              <AdsFlexible
+                imageUrl={contentFlexibleAd?.imageUrl}
+                linkUrl={contentFlexibleAd?.linkUrl}
+              />
               <LicenseDetail post={post} />
               <RelatedPosts
+                authorName={post.author?.name}
                 category={post.category}
                 currentPostId={post.id}
-                authorName={post.author?.name}
               />
-
             </article>
           </div>
-
         </div>
-
       </div>
       {/* Floating Bottom Ad - Outside container for better fixed positioning behavior */}
       <AdsFloatingBottom

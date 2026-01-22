@@ -1,7 +1,7 @@
 "use client";
 
 import { Link } from "@heroui/link";
-import { siteConfig } from "@/config/site";
+
 import { Logo } from "@/components/icons";
 
 export default function Footer() {
@@ -11,7 +11,11 @@ export default function Footer() {
     <footer className="w-full py-10 px-4 border-t border-divider bg-background flex flex-col items-center gap-10">
       {/* Brand Section */}
       <div className="flex flex-col items-center gap-4 text-center">
-        <Link className="flex items-center gap-3 active:scale-95 transition-transform" href="/" color="foreground">
+        <Link
+          className="flex items-center gap-3 active:scale-95 transition-transform"
+          color="foreground"
+          href="/"
+        >
           <div className="w-8 h-8 bg-gradient-to-br from-primary to-success-300 rounded-lg flex items-center justify-center shadow-lg">
             <span className="text-white">
               <Logo size={38} />
@@ -36,8 +40,8 @@ export default function Footer() {
         ].map((link) => (
           <Link
             key={link.label}
-            href={link.href}
             className="text-foreground font-bold hover:text-primary transition-all text-[15px] uppercase tracking-wide"
+            href={link.href}
           >
             {link.label}
           </Link>
