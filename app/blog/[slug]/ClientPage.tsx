@@ -12,6 +12,7 @@ import { getAds } from "@/app/actions/ads";
 import { prisma } from "@/lib/prisma";
 import AdsFlexible from "./components/AdsFlexible";
 import LicenseDetail from "./components/LicenseDetail";
+import RelatedPosts from "./components/RelatedPosts";
 
 export interface BlogClientArticleProps {
   post: {
@@ -209,6 +210,12 @@ export default async function ClientPage({ params }: Props) {
               <HowToGet post={post} />
               <AdsFlexible imageUrl={contentFlexibleAd?.imageUrl} linkUrl={contentFlexibleAd?.linkUrl} />
               <LicenseDetail post={post} />
+              <RelatedPosts
+                category={post.category}
+                currentPostId={post.id}
+                authorName={post.author?.name}
+              />
+
             </article>
           </div>
 
