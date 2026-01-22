@@ -1,38 +1,53 @@
 "use client";
 
 import { Link } from "@heroui/link";
+import { siteConfig } from "@/config/site";
+import { Logo } from "@/components/icons";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
+
   return (
-    <footer className="text-xs flex items-center w-full border-t border-default-200 p-5 bg-default-50 justify-center">
-      <Link
-        className="flex items-center gap-1 text-default-600 text-small"
-        color="foreground"
-        href="/"
-        underline="none"
-      >
-        <span className="text-center">
-          &copy; {new Date().getFullYear()} Copyright by Listofont
-        </span>
-        {/* <span className="bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent font-semibold hover:from-green-600 hover:to-blue-600 transition-all duration-300">
-          Azvan
-        </span> */}
-        {/* <span></span> */}
-      </Link>
+    <footer className="w-full py-10 px-4 border-t border-divider bg-background flex flex-col items-center gap-10">
+      {/* Brand Section */}
+      <div className="flex flex-col items-center gap-4 text-center">
+        <Link className="flex items-center gap-3 active:scale-95 transition-transform" href="/" color="foreground">
+          <div className="w-8 h-8 bg-gradient-to-br from-primary to-success-300 rounded-lg flex items-center justify-center shadow-lg">
+            <span className="text-white">
+              <Logo size={38} />
+            </span>
+          </div>
+          <span className="text-2xl font-bold tracking-tight uppercase">
+            Listofont
+          </span>
+        </Link>
+        <p className="text-default-500 text-sm font-medium max-w-xs sm:max-w-md leading-relaxed">
+          Get In Touch With Us For The Best of Free and Premium Fonts
+        </p>
+      </div>
+
+      {/* Navigation Links */}
+      <nav className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+        {[
+          { label: "About", href: "/about" },
+          { label: "Licences", href: "/licences" },
+          { label: "DMCA", href: "/dmca" },
+          { label: "Privacy", href: "/privacy" },
+        ].map((link) => (
+          <Link
+            key={link.label}
+            href={link.href}
+            className="text-foreground font-bold hover:text-primary transition-all text-[15px] uppercase tracking-wide"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+
+      {/* Copyright */}
+      <div className="text-center text-default-400 text-sm font-medium">
+        <p>&copy; {currentYear} Listofont™. All Rights Reserved.</p>
+      </div>
     </footer>
   );
-}
-
-{
-  /* <footer className="w-full flex items-center justify-center py-3">
-<Link
-  isExternal
-  className="flex items-center gap-1 text-current"
-  href="https://heroui.com?utm_source=next-app-template"
-  title="heroui.com homepage"
->
-  <span className="text-default-600">Powered by</span>
-  <p className="text-primary">HeroUI</p>
-</Link>
-</footer> */
 }
