@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { signIn, useSession } from "next-auth/react";
 import { Alert, Card, CardHeader, CardFooter } from "@heroui/react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
-import ReCAPTCHA from "react-google-recaptcha";
+
 
 import { Logo } from "@/components/icons";
 
@@ -49,7 +49,7 @@ function LoginForm() {
   const [isLocked, setIsLocked] = useState(false);
   const [lockUntil, setLockUntil] = useState<Date | null>(null);
 
-  const [captchaVal, setCaptchaVal] = useState<string | null>(null);
+
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -108,11 +108,7 @@ function LoginForm() {
       return;
     }
 
-    if (!captchaVal) {
-      setError("Silakan selesaikan captcha terlebih dahulu.");
 
-      return;
-    }
 
     setLoading(true);
     setError("");
@@ -127,18 +123,28 @@ function LoginForm() {
 
       if (result?.error) {
         setError("Email atau password salah");
+        // setLoginAttempts((prev) => prev + 1); // Logic moved to backend rate limit, but client counter can stay for UI lock feedback if needed? 
+        // Actually the backend throws specific errors now. 
+        // But NextAuth signIn usually just returns "CredentialsSignin" as error string or custom.
+        // Let's keep existing error handling for now but fix the redirect.
         setLoginAttempts((prev) => prev + 1);
+        setLoading(false); // Stop loading on error
       } else {
         setLoginAttempts(0);
-        // Clean up any old remembered credential if it exists, as we no longer support this feature
         localStorage.removeItem("azra_remember");
+        
+        // Explicitly redirect and KEEP loading true so UI doesn't flash back to login form
+        router.push(searchParams.get("callbackUrl") || "/dashboard");
+        router.refresh(); 
+        // Do NOT set loading false here, let the page transition happen
+        return; 
       }
     } catch (error) {
       console.error("Login error:", error);
       setError("Terjadi kesalahan saat login. Silakan coba lagi.");
-    } finally {
       setLoading(false);
-    }
+    } 
+    // removed finally block to manually control loading state
   };
 
   if (status === "loading" || status === "authenticated") {
@@ -275,13 +281,7 @@ function LoginForm() {
             </div>
 
             <div className="flex justify-center w-full">
-              <ReCAPTCHA
-                sitekey={
-                  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
-                  "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
-                }
-                onChange={(val) => setCaptchaVal(val)}
-              />
+
             </div>
 
             <div className="pt-2">

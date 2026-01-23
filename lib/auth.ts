@@ -37,6 +37,10 @@ declare module "next-auth/jwt" {
   }
 }
 
+declare global {
+  var loginRateLimit: Map<string, { attempts: number; blockExpires: number }> | undefined;
+}
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
@@ -50,13 +54,44 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Please enter email and password");
         }
 
+        const email = credentials.email.toLowerCase();
+
+        // 1. Check Rate Limit
+        const now = Date.now();
+        const rateLimitRecord = globalThis.loginRateLimit?.get(email);
+
+        if (rateLimitRecord) {
+          if (rateLimitRecord.blockExpires > now) {
+            const remainingMinutes = Math.ceil(
+              (rateLimitRecord.blockExpires - now) / 60000,
+            );
+            throw new Error(
+              `Terlalu banyak percobaan. Coba lagi dalam ${remainingMinutes} menit.`,
+            );
+          }
+          // Reset usage if block time has passed
+          if (rateLimitRecord.blockExpires > 0 && rateLimitRecord.blockExpires <= now) {
+            globalThis.loginRateLimit?.delete(email);
+          }
+        }
+
         try {
           const user = await prisma.user.findUnique({
-            where: { email: credentials.email },
+            where: { email },
           });
 
           if (!user || !user.password) {
-            throw new Error("No user found with this email");
+            // Increment failure count
+            if (!globalThis.loginRateLimit) globalThis.loginRateLimit = new Map();
+            const record = globalThis.loginRateLimit.get(email) || { attempts: 0, blockExpires: 0 };
+            record.attempts += 1;
+
+            if (record.attempts >= 5) {
+              record.blockExpires = now + 15 * 60 * 1000; // 15 mins
+            }
+            globalThis.loginRateLimit.set(email, record);
+
+            throw new Error("Email atau password salah");
           }
 
           const isValid = await bcrypt.compare(
@@ -65,8 +100,21 @@ export const authOptions: NextAuthOptions = {
           );
 
           if (!isValid) {
-            throw new Error("Invalid password");
+            // Increment failure count
+            if (!globalThis.loginRateLimit) globalThis.loginRateLimit = new Map();
+            const record = globalThis.loginRateLimit.get(email) || { attempts: 0, blockExpires: 0 };
+            record.attempts += 1;
+
+            if (record.attempts >= 5) {
+              record.blockExpires = now + 15 * 60 * 1000; // 15 mins
+            }
+            globalThis.loginRateLimit.set(email, record);
+
+            throw new Error("Email atau password salah");
           }
+
+          // Success: Clear rate limit
+          globalThis.loginRateLimit?.delete(email);
 
           return {
             id: user.id,
@@ -75,6 +123,10 @@ export const authOptions: NextAuthOptions = {
             role: user.role,
           };
         } catch (error: any) {
+          // Rethrow known errors
+          if (error.message.includes("Terlalu banyak") || error.message.includes("Email atau password")) {
+            throw error;
+          }
           consolePino.error("Auth error:", error);
           throw new Error("Database connection error. Please try again.");
         }
