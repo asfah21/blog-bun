@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
       success: true,
       profile,
     });
-  } catch (error) {
+  } catch (error: any) {
     consolePino.error("Error fetching settings:", error);
 
     return NextResponse.json(
@@ -98,7 +98,7 @@ export async function PUT(req: NextRequest) {
       message: "Profile updated successfully",
       profile: updatedUser,
     });
-  } catch (error) {
+  } catch (error: any) {
     consolePino.error("Error updating profile:", error);
 
     return NextResponse.json(

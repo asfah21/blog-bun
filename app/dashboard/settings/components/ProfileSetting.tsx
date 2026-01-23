@@ -80,7 +80,7 @@ export default function ProfileSetting({ profile }: { profile: any }) {
           color: "danger",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       consolePino.error("Error updating profile:", error);
       addToast({
         title: "Error",
@@ -125,7 +125,7 @@ export default function ProfileSetting({ profile }: { profile: any }) {
           color: "danger",
         });
       }
-    } catch (error) {
+    } catch (error: any) {
       consolePino.error("Error updating photo:", error);
       addToast({
         title: "Error",

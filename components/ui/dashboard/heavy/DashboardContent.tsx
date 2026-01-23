@@ -74,7 +74,7 @@ export default function DashboardContent({
   onRetry,
 }: DashboardContentProps) {
   // Debug log to check loading state
-  consolePino.info("DashboardContent - loading state:", loading);
+  consolePino.info({ loading }, "DashboardContent - loading state:");
 
   // Handle loading state with skeleton
   if (loading) {

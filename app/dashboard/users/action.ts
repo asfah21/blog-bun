@@ -2,7 +2,8 @@
 
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
-import { Role } from "@prisma/client";
+
+
 import { getServerSession } from "next-auth";
 
 import prisma from "@/lib/prisma";
@@ -23,7 +24,7 @@ export async function addUsers(
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const role = formData.get("role") as Role;
+    const role = formData.get("role") as string;
     const department = formData.get("department") as string;
     const fidRaw = (formData.get("fid") as string | null)?.trim() ?? "";
     const nikRaw = (formData.get("nik") as string | null)?.trim() ?? "";
@@ -108,7 +109,7 @@ export async function addUsers(
 
     return { message: "User berhasil ditambahkan!" };
   } catch (error: any) {
-    consolePino.error("Error adding user:", error);
+    consolePino.error(error, "Error adding user:");
 
     return {
       errors: {
@@ -127,24 +128,27 @@ export async function updateUser(
     const name = formData.get("name") as string;
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    const role = formData.get("role") as Role;
+    const role = formData.get("role") as string;
     const department = formData.get("department") as string;
     const fidRaw = (formData.get("fid") as string | null)?.trim() ?? "";
     const nikRaw = (formData.get("nik") as string | null)?.trim() ?? "";
     const session = await getServerSession(authOptions);
     const currentUserRole = session?.user?.role as string | undefined;
 
-    consolePino.info("Update user data:", {
-      id,
-      name,
-      email,
-      role,
-      department,
-      currentUserRole,
-      fid: fidRaw,
-      nik: nikRaw,
-      hasPassword: !!password,
-    });
+    consolePino.info(
+      {
+        id,
+        name,
+        email,
+        role,
+        department,
+        currentUserRole,
+        fid: fidRaw,
+        nik: nikRaw,
+        hasPassword: !!password,
+      },
+      "Update user data:",
+    );
 
     if (currentUserRole !== "super_admin") {
       return {
@@ -246,8 +250,8 @@ export async function updateUser(
     revalidatePath("/dashboard/users");
 
     return { message: "User berhasil diupdate!" };
-  } catch (error) {
-    consolePino.error("Error updating user:", error);
+  } catch (error: any) {
+    consolePino.error(error, "Error updating user:");
 
     return { errors: { general: "Terjadi kesalahan saat mengupdate user." } };
   }
@@ -297,8 +301,8 @@ export async function deleteUser(id: string, _currentUserRole?: string) {
       success: true,
       message: `User ${existingUser.name} berhasil dihapus!`,
     };
-  } catch (error) {
-    consolePino.error("Error deleting user:", error);
+  } catch (error: any) {
+    consolePino.error(error, "Error deleting user:");
 
     return {
       success: false,
@@ -461,19 +465,25 @@ export async function importUsersFromExcel(prevState: any, formData: FormData) {
             });
           } catch (prismaErr: any) {
             // log more details to help debugging (Prisma errors contain meta/code)
-            consolePino.error("Prisma create error for row:", {
-              idx,
-              createData,
-            });
-            consolePino.error("Prisma error:", {
-              message: prismaErr?.message,
-              code: prismaErr?.code,
-              meta: prismaErr?.meta,
-            });
+            consolePino.error(
+              {
+                idx,
+                createData,
+              },
+              "Prisma create error for row:",
+            );
+            consolePino.error(
+              {
+                message: prismaErr?.message,
+                code: prismaErr?.code,
+                meta: prismaErr?.meta,
+              },
+              "Prisma error:",
+            );
             throw prismaErr;
           }
         } catch (err: any) {
-          consolePino.error("Row import error:", { idx, err });
+          consolePino.error({ idx, err }, "Row import error:");
           failed.push({
             rowIndex: idx + 1,
             reason: err?.message || "Unknown error",

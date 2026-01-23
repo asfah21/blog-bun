@@ -100,7 +100,7 @@ export async function POST(req: NextRequest) {
         if (fs.existsSync(oldPhotoPath)) {
           try {
             fs.unlinkSync(oldPhotoPath);
-          } catch (e) {
+          } catch (e: any) {
             consolePino.warn("Failed to delete local file:", e);
           }
         }
@@ -113,7 +113,7 @@ export async function POST(req: NextRequest) {
             await s3.send(
               new DeleteObjectCommand({ Bucket: bucket, Key: key }),
             );
-          } catch (e) {
+          } catch (e: any) {
             consolePino.warn("Failed to delete MinIO object:", e);
           }
         }
@@ -169,8 +169,8 @@ export async function POST(req: NextRequest) {
       photoUrl,
       profile: updatedUser,
     });
-  } catch (error) {
-    consolePino.error("Error updating photo:", error);
+  } catch (error: any) {
+    consolePino.error({ error }, "Error updating photo:");
 
     return NextResponse.json(
       { success: false, message: "Failed to update photo" },

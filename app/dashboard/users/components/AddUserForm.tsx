@@ -90,12 +90,12 @@ export function AddUserForms({ onClose, onUserAdded }: AddUserFormProps) {
     formData.forEach((value, key) => {
       formDataObj[key] = value;
     });
-    consolePino.info("Form data being submitted:", formDataObj);
+    consolePino.info(formDataObj, "Form data being submitted:");
 
     try {
       await formAction(formData);
-    } catch (error) {
-      consolePino.error("Error in form submission:", error);
+    } catch (error: any) {
+      consolePino.error(error, "Error in form submission:");
       throw error; // Re-throw to let the form handle the error
     }
   };
@@ -153,7 +153,7 @@ export function AddUserForms({ onClose, onUserAdded }: AddUserFormProps) {
             isLoading={rolesLoading}
             items={roleOptions}
             label="User Roles"
-            labelPlacement="outside-top"
+            labelPlacement="outside"
             placeholder={
               rolesLoading ? "Loading roles..." : "Search user roles"
             }

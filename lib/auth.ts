@@ -1,6 +1,6 @@
 // lib/auth.ts
 // import { PrismaClient, Role } from "@prisma/client"; // You no longer need PrismaClient here
-import { Role } from "@prisma/client"; // Only import Role if you're using it (which you are)
+// import { Role } from "@prisma/client"; // Only import Role if you're using it (which you are)
 import bcrypt from "bcrypt";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -8,6 +8,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { consolePino } from "./logger";
 
 import prisma from "@/lib/prisma"; // <--- IMPORT THE GLOBAL PRISMA CLIENT HERE
+
+// Define Role as string since it's not an enum in schema
+export type Role = string;
 
 declare module "next-auth" {
   interface User {
@@ -71,7 +74,7 @@ export const authOptions: NextAuthOptions = {
             name: user.name,
             role: user.role,
           };
-        } catch (error) {
+        } catch (error: any) {
           consolePino.error("Auth error:", error);
           throw new Error("Database connection error. Please try again.");
         }

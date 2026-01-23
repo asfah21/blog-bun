@@ -28,7 +28,7 @@ export async function getFontPreview(url: string) {
       const entries = zip.getEntries();
       // Find first font file
       const fontEntry = entries.find(
-        (e) =>
+        (e: any) =>
           /\.(ttf|otf|woff|woff2)$/i.test(e.entryName) &&
           !e.entryName.startsWith("__MACOSX"),
       );

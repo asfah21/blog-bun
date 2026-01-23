@@ -102,7 +102,7 @@ export async function POST(
     if (!MINIO_SECRET_KEY) missing.push("MINIO_SECRET_KEY");
 
     if (missing.length) {
-      consolePino.error("Upload photo misconfig: missing envs", missing);
+      consolePino.error({ missing }, "Upload photo misconfig: missing envs");
 
       return NextResponse.json(
         {
@@ -146,7 +146,7 @@ export async function POST(
         if (fs.existsSync(oldPhotoPath)) {
           try {
             fs.unlinkSync(oldPhotoPath);
-          } catch (e) {
+          } catch (e: any) {
             consolePino.warn("Failed to delete local file:", e);
           }
         }
@@ -159,7 +159,7 @@ export async function POST(
             await s3.send(
               new DeleteObjectCommand({ Bucket: bucket, Key: key }),
             );
-          } catch (e) {
+          } catch (e: any) {
             consolePino.warn("Failed to delete MinIO object:", e);
           }
         }
@@ -186,11 +186,11 @@ export async function POST(
         }),
       );
     } catch (e: any) {
-      consolePino.error("PutObject failed", {
+      consolePino.error({
         name: e?.name,
         message: e?.message,
         code: e?.Code || e?.code,
-      });
+      }, "PutObject failed");
 
       return NextResponse.json(
         {
@@ -228,8 +228,8 @@ export async function POST(
       photoUrl,
       profile: updatedUser,
     });
-  } catch (error) {
-    consolePino.error("Error updating user photo:", error);
+  } catch (error: any) {
+    consolePino.error({ error }, "Error updating user photo:");
 
     return NextResponse.json(
       { success: false, message: "Failed to update photo" },

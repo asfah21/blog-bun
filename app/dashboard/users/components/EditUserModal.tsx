@@ -174,7 +174,7 @@ export function EditUserModal({
             defaultItems={staticRoleOptions}
             isDisabled={!user}
             label="User Roles"
-            labelPlacement="outside-top"
+            labelPlacement="outside"
             name="role"
             placeholder="Search user roles"
             selectedKey={user ? roleKey || null : null}
