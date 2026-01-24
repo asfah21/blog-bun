@@ -17,10 +17,10 @@ export const siteConfig = {
       label: "Category",
       href: "/category",
     },
-    {
-      label: "About",
-      href: "/about",
-    },
+    // {
+    //   label: "About",
+    //   href: "/about",
+    // },
   ],
   navMenuItems: [
     {
@@ -35,10 +35,10 @@ export const siteConfig = {
       label: "Category",
       href: "/category",
     },
-    {
-      label: "About",
-      href: "/about",
-    },
+    // {
+    //   label: "About",
+    //   href: "/about",
+    // },
   ],
   links: {
     github: "https://github.com/heroui-inc/heroui",
@@ -46,6 +46,7 @@ export const siteConfig = {
     docs: "https://heroui.com",
     discord: "https://discord.gg/9b6yyZKmH4",
     login: "/login",
+    join: "/join",
     formine: "https://gsi.db-ku.com",
   },
 };

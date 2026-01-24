@@ -6,7 +6,6 @@ import { signIn, useSession } from "next-auth/react";
 import { Alert, Card, CardHeader, CardFooter } from "@heroui/react";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/outline";
 
-
 import { Logo } from "@/components/icons";
 
 function LoginForm() {
@@ -48,8 +47,6 @@ function LoginForm() {
   const [loginAttempts, setLoginAttempts] = useState(0);
   const [isLocked, setIsLocked] = useState(false);
   const [lockUntil, setLockUntil] = useState<Date | null>(null);
-
-
 
   // Redirect if already authenticated
   useEffect(() => {
@@ -108,8 +105,6 @@ function LoginForm() {
       return;
     }
 
-
-
     setLoading(true);
     setError("");
 
@@ -123,8 +118,8 @@ function LoginForm() {
 
       if (result?.error) {
         setError("Email atau password salah");
-        // setLoginAttempts((prev) => prev + 1); // Logic moved to backend rate limit, but client counter can stay for UI lock feedback if needed? 
-        // Actually the backend throws specific errors now. 
+        // setLoginAttempts((prev) => prev + 1); // Logic moved to backend rate limit, but client counter can stay for UI lock feedback if needed?
+        // Actually the backend throws specific errors now.
         // But NextAuth signIn usually just returns "CredentialsSignin" as error string or custom.
         // Let's keep existing error handling for now but fix the redirect.
         setLoginAttempts((prev) => prev + 1);
@@ -132,18 +127,19 @@ function LoginForm() {
       } else {
         setLoginAttempts(0);
         localStorage.removeItem("azra_remember");
-        
+
         // Explicitly redirect and KEEP loading true so UI doesn't flash back to login form
         router.push(searchParams.get("callbackUrl") || "/dashboard");
-        router.refresh(); 
+        router.refresh();
+
         // Do NOT set loading false here, let the page transition happen
-        return; 
+        return;
       }
     } catch (error) {
       console.error("Login error:", error);
       setError("Terjadi kesalahan saat login. Silakan coba lagi.");
       setLoading(false);
-    } 
+    }
     // removed finally block to manually control loading state
   };
 
@@ -226,7 +222,7 @@ function LoginForm() {
                   className="text-xs bg-gray-50 dark:bg-gray-900 block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
                   disabled={isLocked || loading}
                   id="email"
-                  placeholder="email@contoh.com"
+                  placeholder="email@example.com"
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -280,9 +276,7 @@ function LoginForm() {
               </div>
             </div>
 
-            <div className="flex justify-center w-full">
-
-            </div>
+            <div className="flex justify-center w-full" />
 
             <div className="pt-2">
               <button

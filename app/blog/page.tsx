@@ -7,12 +7,16 @@ export const metadata = {
   title: "About PT GSI",
 };
 
-export default function BlogPage() {
+export default async function BlogPage(props: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const searchParams = await props.searchParams;
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
-        <BlogClientPage />
+        <BlogClientPage searchParams={searchParams} />
       </main>
       <Footer />
     </div>

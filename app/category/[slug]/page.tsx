@@ -10,6 +10,7 @@ interface CategoryPageProps {
   params: Promise<{
     slug: string;
   }>;
+  searchParams: Promise<{ page?: string }>;
 }
 
 export async function generateMetadata({ params }: CategoryPageProps) {
@@ -22,35 +23,51 @@ export async function generateMetadata({ params }: CategoryPageProps) {
   };
 }
 
-export default async function CategoryDetailPage({
-  params,
-}: CategoryPageProps) {
-  const { slug } = await params;
+export default async function CategoryDetailPage(props: CategoryPageProps) {
+  const { slug } = await props.params;
+  const searchParams = await props.searchParams;
   const categoryName = decodeURIComponent(slug);
+  const page = Number(searchParams.page) || 1;
+  const pageSize = 15;
 
   // Get posts for this category
-  const posts = await prisma.post.findMany({
-    where: {
-      category: {
-        equals: categoryName,
-        mode: "insensitive", // case-insensitive search
+  const [posts, total] = await Promise.all([
+    prisma.post.findMany({
+      where: {
+        category: {
+          equals: categoryName,
+          mode: "insensitive", // case-insensitive search
+        },
+        published: true,
       },
-      published: true,
-    },
-    orderBy: { createdAt: "desc" },
-    select: {
-      title: true,
-      slug: true,
-      description: true,
-      createdAt: true,
-      coverImage: true,
-    },
-  });
+      orderBy: { createdAt: "desc" },
+      select: {
+        title: true,
+        slug: true,
+        description: true,
+        createdAt: true,
+        coverImage: true,
+      },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    }),
+    prisma.post.count({
+      where: {
+        category: {
+          equals: categoryName,
+          mode: "insensitive",
+        },
+        published: true,
+      },
+    }),
+  ]);
 
   // If no posts found, show 404
-  if (posts.length === 0) {
+  if (posts.length === 0 && page === 1) {
     notFound();
   }
+
+  const totalPages = Math.ceil(total / pageSize);
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -62,10 +79,15 @@ export default async function CategoryDetailPage({
               {categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
             </h1>
             <p className="text-muted-foreground">
-              {posts.length} {posts.length === 1 ? "post" : "posts"} found
+              {total} {total === 1 ? "post" : "posts"} found
             </p>
           </div>
-          <GridCard hideHeader posts={posts} />
+          <GridCard
+            hideHeader
+            currentPage={page}
+            posts={posts}
+            totalPages={totalPages}
+          />
         </div>
       </main>
       <Footer />

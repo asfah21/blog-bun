@@ -38,7 +38,9 @@ declare module "next-auth/jwt" {
 }
 
 declare global {
-  var loginRateLimit: Map<string, { attempts: number; blockExpires: number }> | undefined;
+  var loginRateLimit:
+    | Map<string, { attempts: number; blockExpires: number }>
+    | undefined;
 }
 
 export const authOptions: NextAuthOptions = {
@@ -65,12 +67,16 @@ export const authOptions: NextAuthOptions = {
             const remainingMinutes = Math.ceil(
               (rateLimitRecord.blockExpires - now) / 60000,
             );
+
             throw new Error(
               `Terlalu banyak percobaan. Coba lagi dalam ${remainingMinutes} menit.`,
             );
           }
           // Reset usage if block time has passed
-          if (rateLimitRecord.blockExpires > 0 && rateLimitRecord.blockExpires <= now) {
+          if (
+            rateLimitRecord.blockExpires > 0 &&
+            rateLimitRecord.blockExpires <= now
+          ) {
             globalThis.loginRateLimit?.delete(email);
           }
         }
@@ -82,8 +88,13 @@ export const authOptions: NextAuthOptions = {
 
           if (!user || !user.password) {
             // Increment failure count
-            if (!globalThis.loginRateLimit) globalThis.loginRateLimit = new Map();
-            const record = globalThis.loginRateLimit.get(email) || { attempts: 0, blockExpires: 0 };
+            if (!globalThis.loginRateLimit)
+              globalThis.loginRateLimit = new Map();
+            const record = globalThis.loginRateLimit.get(email) || {
+              attempts: 0,
+              blockExpires: 0,
+            };
+
             record.attempts += 1;
 
             if (record.attempts >= 5) {
@@ -101,8 +112,13 @@ export const authOptions: NextAuthOptions = {
 
           if (!isValid) {
             // Increment failure count
-            if (!globalThis.loginRateLimit) globalThis.loginRateLimit = new Map();
-            const record = globalThis.loginRateLimit.get(email) || { attempts: 0, blockExpires: 0 };
+            if (!globalThis.loginRateLimit)
+              globalThis.loginRateLimit = new Map();
+            const record = globalThis.loginRateLimit.get(email) || {
+              attempts: 0,
+              blockExpires: 0,
+            };
+
             record.attempts += 1;
 
             if (record.attempts >= 5) {
@@ -124,7 +140,10 @@ export const authOptions: NextAuthOptions = {
           };
         } catch (error: any) {
           // Rethrow known errors
-          if (error.message.includes("Terlalu banyak") || error.message.includes("Email atau password")) {
+          if (
+            error.message.includes("Terlalu banyak") ||
+            error.message.includes("Email atau password")
+          ) {
             throw error;
           }
           consolePino.error("Auth error:", error);

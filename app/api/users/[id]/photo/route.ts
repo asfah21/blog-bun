@@ -186,11 +186,14 @@ export async function POST(
         }),
       );
     } catch (e: any) {
-      consolePino.error({
-        name: e?.name,
-        message: e?.message,
-        code: e?.Code || e?.code,
-      }, "PutObject failed");
+      consolePino.error(
+        {
+          name: e?.name,
+          message: e?.message,
+          code: e?.Code || e?.code,
+        },
+        "PutObject failed",
+      );
 
       return NextResponse.json(
         {

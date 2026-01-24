@@ -1,6 +1,7 @@
+import PolicyClientPage from "./PolicyClientPage";
+
 import { Navbar } from "@/components/navbar";
 import Footer from "@/components/Footer";
-import PolicyClientPage from "./PolicyClientPage";
 
 export const metadata = {
   title: "About PT GSI",

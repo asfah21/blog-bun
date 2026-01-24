@@ -2,8 +2,6 @@
 
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
-
-
 import { getServerSession } from "next-auth";
 
 import prisma from "@/lib/prisma";

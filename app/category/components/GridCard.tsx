@@ -2,7 +2,8 @@
 import type { FC } from "react";
 
 import Link from "next/link";
-import { Card, CardHeader, CardBody } from "@heroui/react";
+import { Card, CardHeader, CardBody, Pagination } from "@heroui/react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export interface GridCardPost {
   title: string;
@@ -20,10 +21,23 @@ function formatDate(date: Date) {
   });
 }
 
-export const GridCard: FC<{ posts: GridCardPost[]; hideHeader?: boolean }> = ({
-  posts,
-  hideHeader = false,
-}) => {
+export const GridCard: FC<{
+  posts: GridCardPost[];
+  hideHeader?: boolean;
+  totalPages?: number;
+  currentPage?: number;
+}> = ({ posts, hideHeader = false, totalPages = 1, currentPage = 1 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("page", page.toString());
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       {!hideHeader && (
@@ -72,9 +86,9 @@ export const GridCard: FC<{ posts: GridCardPost[]; hideHeader?: boolean }> = ({
               </div>
 
               <CardBody className="p-5">
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-2">
+                {/* <p className="text-sm text-muted-foreground leading-relaxed mb-6 line-clamp-2">
                   {post.description || "No description available."}
-                </p>
+                </p> */}
 
                 <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground">
                   <span>{formatDate(post.createdAt)}</span>
@@ -87,6 +101,20 @@ export const GridCard: FC<{ posts: GridCardPost[]; hideHeader?: boolean }> = ({
           </Link>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-12 flex justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={currentPage}
+            total={totalPages}
+            onChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -103,18 +103,23 @@ export const Navbar = () => {
             }}
           />
         </NavbarItem>
-        <NavbarItem className="hidden md:flex">
-          <Button
-            isExternal
-            as={Link}
-            className="bg-gradient-to-tr from-success to-primary text-white shadow-lg"
-            // className="text-sm font-normal text-default-600 bg-default-100"
-            // color="secondary"
-            // radius="full"
+        <NavbarItem className="hidden md:flex gap-2">
+          {/* <Button
+            as={NextLink}
+            className="bg-default-100 text-default-800"
             href={siteConfig.links.login}
-            variant="solid"
+            variant="flat"
           >
             Login
+          </Button> */}
+          <Button
+            as={NextLink}
+            className="text-white shadow-lg"
+            color="primary"
+            href={siteConfig.links.join}
+            variant="ghost"
+          >
+            Join
           </Button>
         </NavbarItem>
       </NavbarContent>
@@ -170,18 +175,23 @@ export const Navbar = () => {
             </NavbarMenuItem>
           ))}
         </div>
-        <div className="mt-2">
-          <Button
-            isExternal
-            as={Link}
-            className="bg-gradient-to-tr from-success to-primary text-white shadow-lg"
-            // className="text-sm font-normal text-default-600 bg-default-100"
-            // color="secondary"
-            // radius="full"
+        <div className="mt-4 flex flex-col gap-2">
+          {/* <Button
+            as={NextLink}
+            className="w-full bg-default-100 text-default-800"
             href={siteConfig.links.login}
-            variant="solid"
+            variant="flat"
           >
             Login
+          </Button> */}
+          <Button
+            as={NextLink}
+            className="w-full text-white shadow-lg"
+            color="primary"
+            href={siteConfig.links.join}
+            variant="ghost"
+          >
+            Join
           </Button>
         </div>
       </NavbarMenu>

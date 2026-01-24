@@ -2,7 +2,8 @@
 import type { FC } from "react";
 
 import Link from "next/link";
-import { Card, CardHeader, CardBody } from "@heroui/react";
+import { Card, CardHeader, CardBody, Pagination } from "@heroui/react";
+import { useRouter, usePathname, useSearchParams } from "next/navigation";
 
 export interface CategoryItem {
   name: string;
@@ -10,9 +11,22 @@ export interface CategoryItem {
   coverImage?: string | null;
 }
 
-export const CategoryGrid: FC<{ categories: CategoryItem[] }> = ({
-  categories,
-}) => {
+export const CategoryGrid: FC<{
+  categories: CategoryItem[];
+  totalPages: number;
+  currentPage: number;
+}> = ({ categories, totalPages, currentPage }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const handlePageChange = (page: number) => {
+    const params = new URLSearchParams(searchParams.toString());
+
+    params.set("page", page.toString());
+    router.push(`${pathname}?${params.toString()}`);
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-12">
       <h1 className="text-4xl font-bold text-center mb-2">
@@ -73,6 +87,20 @@ export const CategoryGrid: FC<{ categories: CategoryItem[] }> = ({
           </Link>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="mt-12 flex justify-center">
+          <Pagination
+            isCompact
+            showControls
+            showShadow
+            color="primary"
+            page={currentPage}
+            total={totalPages}
+            onChange={handlePageChange}
+          />
+        </div>
+      )}
     </div>
   );
 };
