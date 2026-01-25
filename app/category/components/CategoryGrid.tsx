@@ -71,10 +71,10 @@ export const CategoryGrid: FC<{
               </div>
 
               <CardBody className="p-5">
-                <p className="text-sm text-muted-foreground leading-relaxed mb-6">
+                {/* <p className="text-sm text-muted-foreground leading-relaxed mb-6">
                   {category.count} {category.count === 1 ? "post" : "posts"} in
                   this category
-                </p>
+                </p> */}
 
                 <div className="mt-auto flex items-center justify-between text-xs text-muted-foreground">
                   <span className="text-primary font-medium">View All →</span>

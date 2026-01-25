@@ -99,11 +99,11 @@ export default function Hero() {
               >
                 <a
                   className="text-sm bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-full transition"
-                  href="/login"
+                  href="/blog"
                 >
                   Get Started →
                 </a>
-                <div className="bg-green-600 hover:bg-green-700 transition text-white px-4 py-3 rounded-full font-mono text-sm flex items-center gap-2">
+                {/* <div className="bg-green-600 hover:bg-green-700 transition text-white px-4 py-3 rounded-full font-mono text-sm flex items-center gap-2">
                   <span>#</span>
                   <span>Ask for access </span>
                   <button
@@ -115,7 +115,7 @@ export default function Hero() {
                   >
                     📋
                   </button>
-                </div>
+                </div> */}
               </motion.div>
             </motion.div>
 

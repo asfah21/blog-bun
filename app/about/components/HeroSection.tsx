@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@heroui/react";
 import { motion } from "framer-motion";
 
 import { title, subtitle } from "@/components/primitives";
@@ -25,7 +24,7 @@ export default function HeroSection({
         className={title({ size: "lg", color: "blue", class: "mb-6" })}
         variants={fadeIn}
       >
-        About PT GSI
+        About Us
       </motion.h1>
 
       <motion.div
@@ -34,26 +33,28 @@ export default function HeroSection({
         })}
         variants={fadeIn}
       >
-        <p className="leading-relaxed">
-          &nbsp;&nbsp;&nbsp;&nbsp; We are a company engaged in nickel ore mining
-          services, heavy equipment rental services, and manpower services. We
-          are committed to continuously improving our company’s performance
-          through the implementation of Good Corporate Governance (GCG),
-          supported by the application of Occupational Health and Safety
-          Management Systems (SMK3) and Mineral and Coal Mining Safety
-          Management Systems (SMKP), in accordance with the company’s risk
-          management framework.
+        <p className="leading-relaxed pt-2">
+          &nbsp;&nbsp;&nbsp;&nbsp; Listofont.com is a free demo font collection
+          website featuring high-quality fonts shared by their creators for
+          testing and preview purposes. These fonts can be used across platforms
+          such as Adobe Photoshop, Illustrator, and Microsoft Word to help
+          designers explore ideas before finalizing commercial projects.
         </p>
-      </motion.div>
-      <motion.div variants={fadeIn}>
-        <Button
-          className="font-medium px-8 py-6 text-lg shadow-lg hover:shadow-xl transition-shadow"
-          color="primary"
-          radius="full"
-          size="lg"
-        >
-          Get Started
-        </Button>
+        <br />
+        <p className="leading-relaxed">
+          &nbsp;&nbsp;&nbsp;&nbsp; All demo fonts available on our site are
+          intended for personal and trial use only, allowing designers to
+          experiment and refine their concepts for themselves or their clients.
+          Our mission is to help designers quickly discover great fonts without
+          spending hours searching across countless websites. Our team carefully
+          curates premium-quality fonts, handling all the hard work so our
+          visitors can access them for free. Listofont.com is supported solely
+          by advertising, which helps cover team operations and server costs to
+          keep the site online. We are fully committed to helping designers find
+          the fonts they need for their creative projects.
+          <br />
+          <br />— The Listofont Team
+        </p>
       </motion.div>
     </motion.div>
   );

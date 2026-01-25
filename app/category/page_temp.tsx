@@ -62,7 +62,7 @@ export default async function CategoryPage({
   const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
   const paginatedCategories = categories.slice(
     (currentPage - 1) * ITEMS_PER_PAGE,
-    currentPage * ITEMS_PER_PAGE
+    currentPage * ITEMS_PER_PAGE,
   );
 
   return (
