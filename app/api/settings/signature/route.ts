@@ -89,7 +89,7 @@ export async function POST(req: NextRequest) {
       message: "Signature uploaded successfully",
       signatureUrl,
     });
-  } catch (error) {
+  } catch (error: any) {
     consolePino.error("Error uploading signature:", error);
 
     return NextResponse.json(
