@@ -9,7 +9,14 @@ export const metadata = {
   description: "Explore all categories and find content that interests you",
 };
 
-export default async function CategoryPage() {
+export default async function CategoryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ page?: string }>;
+}) {
+  const params = await searchParams;
+  const currentPage = Number(params.page) || 1;
+
   // Get all posts with their categories
   const posts = await prisma.post.findMany({
     where: { published: true },
@@ -49,11 +56,24 @@ export default async function CategoryPage() {
     coverImage: data.image,
   }));
 
+  // Pagination
+  const ITEMS_PER_PAGE = 12;
+  const totalItems = categories.length;
+  const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+  const paginatedCategories = categories.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
-        <CategoryGrid categories={categories} />
+        <CategoryGrid
+          categories={paginatedCategories}
+          currentPage={currentPage}
+          totalPages={totalPages}
+        />
       </main>
       <Footer />
     </div>
