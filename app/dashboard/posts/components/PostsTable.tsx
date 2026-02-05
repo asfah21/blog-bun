@@ -57,6 +57,10 @@ interface PostRow {
   category: string | null;
   link?: string | null;
   buy?: string | null;
+  content?: string;
+  description?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
   downloadCount: number;
   buyCount: number;
   author?: {
@@ -121,6 +125,10 @@ export default function PostsTable({ posts }: { posts: PostRow[] }) {
     const exportData = filteredData.map((p) => ({
       Title: p.title,
       Slug: p.slug,
+      Content: p.content || "",
+      Description: p.description || "",
+      MetaTitle: p.metaTitle || "",
+      MetaDescription: p.metaDescription || "",
       Author: p.author?.name || "-",
       Category: p.category || "-",
       "Click Count": p.downloadCount || 0,
