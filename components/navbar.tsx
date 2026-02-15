@@ -139,7 +139,7 @@ export const Navbar = () => {
           </Button> */}
           <Button
             as={NextLink}
-            className="text-white shadow-lg"
+            className="text-default-800 shadow-lg"
             color="primary"
             href={siteConfig.links.join}
             variant="ghost"
@@ -211,7 +211,7 @@ export const Navbar = () => {
           </Button> */}
           <Button
             as={NextLink}
-            className="w-full text-white shadow-lg"
+            className="w-full text-default-800 shadow-lg"
             color="primary"
             href={siteConfig.links.join}
             variant="ghost"
