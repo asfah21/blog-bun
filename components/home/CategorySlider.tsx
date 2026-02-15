@@ -3,33 +3,17 @@
 import { ScrollShadow } from "@heroui/react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 
-interface Category {
+export interface Category {
   name: string;
   id: string;
   link?: string;
   icon?: ReactNode;
+  count?: number;
 }
 
 const FALLBACK_CATEGORIES: Category[] = [
-  // {
-  //   name: "Graffiti Fonts",
-  //   id: "graffiti-fonts",
-  //   link: "/graffiti-fonts",
-  //   icon: (
-  //     <svg
-  //       className="text-orange-500 rotate-12"
-  //       fill="currentColor"
-  //       height="16"
-  //       viewBox="0 0 24 24"
-  //       width="16"
-  //       xmlns="http://www.w3.org/2000/svg"
-  //     >
-  //       <path d="M18.8835 4.39999C18.4907 3.52086 17.6186 2.94315 16.6579 2.94315H7.34208C5.69466 2.94315 4.25418 4.10379 3.93175 5.71966L2.09115 14.922C1.9478 15.6385 2.14856 16.3813 2.63669 16.9387C3.12481 17.4961 3.83925 17.817 4.58071 17.817H6.94315V20.0569C6.94315 20.6091 7.39086 21.0569 7.94315 21.0569H16.0569C16.6091 21.0569 17.0569 20.6091 17.0569 20.0569V17.817H19.4193C20.1608 17.817 20.8752 17.4961 21.3633 16.9387C21.8514 16.3813 22.0522 15.6385 21.9089 14.922L20.0683 5.71966C19.8803 4.78018 19.4727 4.15655 18.8835 4.39999ZM5.38539 6.00971C5.59968 4.93516 6.54585 4.16315 7.64208 4.16315H16.3579C17.4542 4.16315 18.4003 4.93516 18.6146 6.00971L19.4429 10.1631H4.55712L5.38539 6.00971Z" />
-  //     </svg>
-  //   ),
-  // },
   {
     name: "Serif",
     id: "serif",
@@ -50,8 +34,6 @@ const FALLBACK_CATEGORIES: Category[] = [
     id: "family",
     link: "/category/family",
   },
-
-
   {
     name: "Duo",
     id: "duo",
@@ -72,7 +54,6 @@ const FALLBACK_CATEGORIES: Category[] = [
     id: "signature",
     link: "/category/signature",
   },
-
   {
     name: "Brush",
     id: "brush",
@@ -83,41 +64,30 @@ const FALLBACK_CATEGORIES: Category[] = [
     id: "calligraphy",
     link: "/category/calligraphy",
   },
-
 ];
 
-export default function CategorySlider() {
-  const [categories, setCategories] = useState<Category[]>(FALLBACK_CATEGORIES);
+export default function CategorySlider({
+  initialCategories,
+}: {
+  initialCategories?: Category[];
+}) {
+  const [categories, setCategories] = useState<Category[]>(() => {
+    if (initialCategories && initialCategories.length > 0) {
+      return initialCategories.map((dbCat) => {
+        const fallback = FALLBACK_CATEGORIES.find(
+          (f) => f.name.toLowerCase() === dbCat.name.toLowerCase(),
+        );
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch("/api/categories");
-        if (!response.ok) throw new Error("Network response was not ok");
-        const data = await response.json();
+        return {
+          ...dbCat,
+          icon: fallback?.icon || dbCat.icon,
+          link: fallback?.link || dbCat.link,
+        };
+      });
+    }
 
-        if (Array.isArray(data) && data.length > 0) {
-          // Map DB categories and try to preserve icons/custom links from fallback
-          const mappedCategories = data.map((dbCat: Category) => {
-            const fallback = FALLBACK_CATEGORIES.find(
-              (f) => f.name.toLowerCase() === dbCat.name.toLowerCase()
-            );
-            return {
-              ...dbCat,
-              icon: fallback?.icon || dbCat.icon,
-              link: fallback?.link || dbCat.link,
-            };
-          });
-          setCategories(mappedCategories);
-        }
-      } catch (error) {
-        console.error("Failed to fetch categories, using fallback:", error);
-        // Fallback is already set as initial state
-      }
-    };
-
-    fetchCategories();
-  }, []);
+    return FALLBACK_CATEGORIES;
+  });
 
   return (
     <motion.section
@@ -158,4 +128,3 @@ export default function CategorySlider() {
     </motion.section>
   );
 }
-

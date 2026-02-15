@@ -99,6 +99,41 @@ export default function Fonts() {
     }
   };
 
+  // Consolidate @font-face rules
+  useEffect(() => {
+    if (fonts.length === 0) return;
+
+    const styleId = "font-preview-styles";
+    let styleTag = document.getElementById(styleId) as HTMLStyleElement;
+
+    if (!styleTag) {
+      styleTag = document.createElement("style");
+      styleTag.id = styleId;
+      document.head.appendChild(styleTag);
+    }
+
+    const rules = fonts
+      .map(
+        (font) => `
+      @font-face {
+        font-family: "${font.variants[0].name}";
+        src: url("${font.variants[0].file}");
+        font-display: swap;
+      }
+    `,
+      )
+      .join("\n");
+
+    styleTag.innerHTML = rules;
+
+    return () => {
+      // Keep it or remove it? For single page app best to remove if component unmounts
+      // but maybe keep it for performance if user navigates back.
+      // For now we leave it to avoid re-parsing on every mount if possible,
+      // but here we update it on fonts change.
+    };
+  }, [fonts]);
+
   return (
     <motion.section
       className="px-6 md:px-20 w-full flex justify-center py-10"
@@ -210,24 +245,14 @@ export default function Fonts() {
                       animate={{ opacity: 1, y: 0 }}
                       className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
                       initial={{ opacity: 0, y: 10 }}
-                      transition={{ delay: index * 0.1 }}
+                      transition={{ delay: index * 0.05 }}
                     >
-                      <style>{`
-                        @font-face {
-                          font-family: "${font.variants[0].name}";
-                          src: url("${font.variants[0].file}");
-                        }
-                      `}</style>
-
                       <div className="p-4 flex flex-col gap-4">
                         <div className="flex justify-between items-start">
                           <div className="flex gap-2">
                             <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
                               {font.name}
                             </span>
-                            {/* <span className="px-2 py-1 bg-primary/10 text-primary rounded-md text-xs font-medium border border-primary/20">
-                                                        Premium
-                                                    </span> */}
                           </div>
 
                           <Button

@@ -1,17 +1,19 @@
 import { Navbar } from "@/components/navbar";
-// import Navbar from "@/components/navbar-client";
 import Footer from "@/components/Footer";
 import Hero from "@/components/home/Hero";
-import CategorySlider from "@/components/home/CategorySlider";
+import CategorySlider, { Category } from "@/components/home/CategorySlider";
 import HeroAlpha from "@/components/home/HeroAlpha";
 import Fonts from "@/components/home/Font";
+import { getCategories } from "@/lib/categories";
 
-export default function Home() {
+export default async function Home() {
+  const categories = (await getCategories()) as Category[];
+
   return (
     <div className="flex flex-col min-h-screen">
       <Navbar />
       <main className="flex-1">
-        <CategorySlider />
+        <CategorySlider initialCategories={categories} />
         <Hero />
         <Fonts />
         <HeroAlpha />

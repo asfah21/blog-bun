@@ -1,7 +1,8 @@
 "use client";
 
-import { Card, CardFooter, Image, Button } from "@heroui/react";
+import { Card, CardFooter, Button } from "@heroui/react";
 import { motion } from "framer-motion";
+import NextImage from "next/image";
 
 import TypingMotion from "../TypingMotion";
 
@@ -129,7 +130,8 @@ export default function Hero() {
                   className="border-none animate-float priority opacity-85"
                   radius="lg"
                 >
-                  <Image
+                  <NextImage
+                    priority
                     alt="Listofont Management Assets"
                     className="object-cover"
                     height={300}
