@@ -32,7 +32,7 @@ export default function FontBlog({ post }: FontBlogProps) {
   const [previewText, setPreviewText] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [downloading, setDownloading] = useState<boolean>(false);
-  const [fontUrl, setFontUrl] = useState<string | null>(null);
+  const [fonts, setFonts] = useState<{ name: string; url: string }[]>([]);
   const [fontError, setFontError] = useState<string | null>(null);
   const [fontSize, setFontSize] = useState<number>(75);
   const [textColor, setTextColor] = useState("#000000");
@@ -52,8 +52,8 @@ export default function FontBlog({ post }: FontBlogProps) {
         const res = await getFontPreview(post.link);
 
         if (isMounted) {
-          if (res.success && res.url) {
-            setFontUrl(res.url);
+          if (res.success && res.fonts) {
+            setFonts(res.fonts);
           } else {
             setFontError(res.error || "Failed to load font");
           }
@@ -71,20 +71,6 @@ export default function FontBlog({ post }: FontBlogProps) {
       isMounted = false;
     };
   }, [post?.link]);
-
-  // Construct font object only if we have a loaded URL
-  const font: Font | null =
-    post && fontUrl
-      ? {
-          name: post.title,
-          variants: [
-            {
-              name: post.title,
-              file: fontUrl,
-            },
-          ],
-        }
-      : null;
 
   // Initialize colors based on theme
   useEffect(() => {
@@ -176,7 +162,7 @@ export default function FontBlog({ post }: FontBlogProps) {
     }
   };
 
-  if (!font) return null;
+  if (!loading && fonts.length === 0) return null;
 
   return (
     <div className="w-full max-w-screen-2xl">
@@ -275,53 +261,46 @@ export default function FontBlog({ post }: FontBlogProps) {
                 />
               ))
             ) : (
-              <motion.div
-                animate={{ opacity: 1, y: 0 }}
-                className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
-                initial={{ opacity: 0, y: 10 }}
-              >
-                <style>{`
-                  @font-face {
-                    font-family: "${font.name}";
-                    src: url("${font.variants[0].file}");
-                  }
-                `}</style>
-
-                <div className="p-4 flex flex-col gap-4">
-                  <div className="flex justify-between items-start">
-                    <div className="flex gap-2">
-                      <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
-                        {font.name}
-                      </span>
-                    </div>
-
-                    {/* <Button
-                                            color="primary"
-                                            isLoading={downloading}
-                                            size="sm"
-                                            startContent={
-                                                !downloading && <ArrowDownTrayIcon className="w-4 h-4" />
-                                            }
-                                            variant="flat"
-                                            onPress={handleDownload}
-                                        >
-                                            {downloading ? "Downloading..." : "Download"}
-                                        </Button> */}
-                  </div>
-
-                  <div
-                    className="w-full overflow-hidden text-ellipsis whitespace-nowrap py-4 px-4 rounded-lg transition-colors border border-dashed border-default-300"
-                    style={{
-                      fontFamily: `"${font.name}", sans-serif`,
-                      fontSize: `${fontSize}px`,
-                      color: textColor,
-                      backgroundColor: backgroundColor,
-                    }}
+              <>
+                {fonts.map((fontVariant, idx) => (
+                  <motion.div
+                    key={idx}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="group relative overflow-hidden rounded-xl bg-content1 shadow-sm transition-all hover:shadow-md hover:border-primary/50"
+                    initial={{ opacity: 0, y: 10 }}
                   >
-                    {previewText || font.name}
-                  </div>
-                </div>
-              </motion.div>
+                    <style>{`
+                          @font-face {
+                            font-family: "Preview_${idx}";
+                            src: url("${fontVariant.url}");
+                          }
+                        `}</style>
+
+                    <div className="p-4 flex flex-col gap-4">
+                      <div className="flex justify-between items-start">
+                        <div className="flex gap-2">
+                          <span className="px-2 py-1 bg-default-100 rounded-md text-xs font-medium text-default-600 border border-default-200">
+                            {fontVariant.name}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div
+                        className="w-full overflow-hidden text-ellipsis whitespace-nowrap py-4 px-4 rounded-lg transition-colors border border-dashed border-default-300"
+                        style={{
+                          fontFamily: `"Preview_${idx}", sans-serif`,
+                          fontSize: `${fontSize}px`,
+                          color: textColor,
+                          backgroundColor: backgroundColor,
+                        }}
+                      >
+                        {previewText ||
+                          "The quick brown fox jumps over the lazy dog"}
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </>
             )}
           </div>
         </div>

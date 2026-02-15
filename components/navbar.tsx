@@ -15,6 +15,7 @@ import {
 } from "@heroui/react";
 import NextLink from "next/link";
 import clsx from "clsx";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 import { siteConfig } from "@/config/site";
@@ -24,12 +25,36 @@ import { SearchIcon, Logo } from "@/components/icons";
 const SearchInput = (props: any) => {
   const [mounted, setMounted] = useState(false);
 
+  const router = useRouter();
+  const [value, setValue] = useState("");
+
   useEffect(() => setMounted(true), []);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (value.trim()) {
+        router.push(`/search?q=${encodeURIComponent(value)}`);
+      }
+    }
+  };
+
+  const handleValueChange = (val: string) => {
+    setValue(val);
+    props.onValueChange?.(val);
+  };
 
   if (!mounted)
     return <div className="w-full h-10 bg-default-100 rounded-xl" />;
 
-  return <Input {...props} suppressHydrationWarning />;
+  return (
+    <Input
+      {...props}
+      suppressHydrationWarning
+      value={value}
+      onKeyDown={handleKeyDown}
+      onValueChange={handleValueChange}
+    />
+  );
 };
 
 export const Navbar = () => {

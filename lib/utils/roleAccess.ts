@@ -28,6 +28,7 @@ export function getRoleAccess(): Record<NavItemID, Role[]> {
     try {
       return JSON.parse(saved);
     } catch (e) {
+      // eslint-disable-next-line no-console
       console.error("Failed to parse roleAccess from localStorage", e);
     }
   }
@@ -42,6 +43,7 @@ export function saveRoleAccess(access: Record<NavItemID, Role[]>): void {
   try {
     localStorage.setItem("roleAccess", JSON.stringify(access));
   } catch (e) {
+    // eslint-disable-next-line no-console
     console.error("Failed to save roleAccess to localStorage", e);
   }
 }

@@ -1,19 +1,14 @@
-import { MetadataRoute } from 'next'
+import { MetadataRoute } from "next";
 
 export default function robots(): MetadataRoute.Robots {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://listofont.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://listofont.com";
 
-    return {
-        rules: {
-            userAgent: '*',
-            allow: '/',
-            disallow: [
-                '/api/',
-                '/dashboard/',
-                '/login/',
-                '/join/',
-            ],
-        },
-        sitemap: `${baseUrl}/sitemap.xml`,
-    }
+  return {
+    rules: {
+      userAgent: "*",
+      allow: "/",
+      disallow: ["/api/", "/dashboard/", "/login/", "/join/"],
+    },
+    sitemap: `${baseUrl}/sitemap.xml`,
+  };
 }
